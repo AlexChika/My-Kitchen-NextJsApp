@@ -4,128 +4,145 @@ import Header from "../components/Header";
 import Image from "next/image";
 export default function Home() {
   const [deviceWidth, setWidth] = useState("");
+  const [pageCount, setPageCount] = useState(1);
   useEffect(() => {
     setWidth(window.innerWidth);
   });
   return (
     <>
       <Header />
-      <LandingWrap bg={deviceWidth}>
+      <LandingWrap page={pageCount} bg={deviceWidth}>
         <div className="brand_name">
           <i className="fi fi-sr-utensils"></i>
           <h2>My Kitchen</h2>
           <i className="fi fi-sr-pot"></i>
         </div>
         {/* ......end of brand name */}
-        <div>
-          <button className="next"></button>
-          <button className="prev"></button>
+        <div className="arrow_btn_con">
+          <button className="next">
+            <i class="bi bi-caret-right-fill"></i>
+          </button>
+          <button className="prev">
+            <i class="bi bi-caret-left-fill"></i>
+          </button>
         </div>
-        <div className="middle_text_con">
-          <h1>
-            Thank You <i className="fi fi-sr-heart"></i> For Joining Kitchen
-          </h1>
-          <ul>
-            <li>
-              <i className="fi fi-sr-star"></i> {"   "} Watch Video Tutorials
-            </li>
-            <li>
-              <i className="fi fi-sr-star"></i> {"   "} Become An Instant Chef
-            </li>
-            <li>
-              <i className="fi fi-sr-star"></i> {"   "} Prepare Your Favorite
-              Meal
-            </li>
-          </ul>
-          <p>Your Only Step To Becoming A Chef </p>
-        </div>
-        <div className="brand_offers_con">
-          <section className="brand_balls">
-            <div className="brand_balls_first">
-              <article>
-                <figure className="img_con">
-                  <Image
-                    alt="mykitchen icons"
-                    width="80px"
-                    height="80px"
-                    src="/ball-1.jpg"
-                  />
-                </figure>
-                <p>Find Meals</p>
-              </article>
-              {/* ...... */}
-              <article>
-                <figure className="img_con">
-                  <Image
-                    alt="mykitchen icons"
-                    width="80px"
-                    height="80px"
-                    src="/ball-2.jpg"
-                  />
-                </figure>
-                <p>See Tutorials</p>
-              </article>
-              {/* ....... */}
-              <article>
-                <figure className="img_con">
-                  <Image
-                    alt="mykitchen icons"
-                    width="80px"
-                    height="80px"
-                    src="/ball-3.jpg"
-                  />
-                </figure>
-                <p>Save Favourites</p>
-              </article>
+        <main>
+          <div className="middle_text_con">
+            <h1>
+              Thank You For Choosing Kitchen <i className="fi fi-sr-heart"></i>
+            </h1>
+            <ul>
+              <li>
+                <i className="fi fi-sr-star"></i> {"   "} Watch Video Tutorials
+              </li>
+              <li>
+                <i className="fi fi-sr-star"></i> {"   "} Become An Instant Chef
+              </li>
+              <li>
+                <i className="fi fi-sr-star"></i> {"   "} Prepare Your Favorite
+                Meal
+              </li>
+            </ul>
+            <p>Your Only Step To Becoming A Chef </p>
+          </div>
+          <div className="brand_offers_con">
+            <section className="brand_balls">
+              <div className="brand_balls_first">
+                <article>
+                  <figure className="img_con">
+                    <Image
+                      alt="mykitchen icons"
+                      width="80px"
+                      height="80px"
+                      src="/ball-1.jpg"
+                    />
+                  </figure>
+                  <p>Find Meals</p>
+                </article>
+                {/* ...... */}
+                <article>
+                  <figure className="img_con">
+                    <Image
+                      alt="mykitchen icons"
+                      width="80px"
+                      height="80px"
+                      src="/ball-2.jpg"
+                    />
+                  </figure>
+                  <p>See Tutorials</p>
+                </article>
+                {/* ....... */}
+                <article>
+                  <figure className="img_con">
+                    <Image
+                      alt="mykitchen icons"
+                      width="80px"
+                      height="80px"
+                      src="/ball-3.jpg"
+                    />
+                  </figure>
+                  <p>Save Favourites</p>
+                </article>
+              </div>
+              <div className="brand_balls_second">
+                <article>
+                  <figure className="img_con">
+                    <Image
+                      alt="mykitchen icons"
+                      width="80px"
+                      height="80px"
+                      src="/ball-4.jpg"
+                    />
+                  </figure>
+                  <p>View Recipes</p>
+                </article>
+                {/* ........ */}
+                <article>
+                  <figure className="img_con">
+                    <Image
+                      alt="mykitchen icons"
+                      width="80px"
+                      height="80px"
+                      src="/ball-5.jpg"
+                    />
+                  </figure>
+                  <p>Make TimeTable</p>
+                </article>
+                {/* ......... */}
+                <article>
+                  <figure className="img_con">
+                    <Image
+                      alt="mykitchen icons"
+                      width="80px"
+                      height="80px"
+                      src="/ball-6.jpg"
+                    />
+                  </figure>
+                  <p>Easy Personalize</p>
+                </article>
+              </div>
+            </section>
+          </div>
+          <div className="footer_con">
+            <div className="progress_con">
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
-            <div className="brand_balls_second">
-              <article>
-                <figure className="img_con">
-                  <Image
-                    alt="mykitchen icons"
-                    width="80px"
-                    height="80px"
-                    src="/ball-4.jpg"
-                  />
-                </figure>
-                <p>View Recipes</p>
-              </article>
-              {/* ........ */}
-              <article>
-                <figure className="img_con">
-                  <Image
-                    alt="mykitchen icons"
-                    width="80px"
-                    height="80px"
-                    src="/ball-5.jpg"
-                  />
-                </figure>
-                <p>Make TimeTable</p>
-              </article>
-              {/* ......... */}
-              <article>
-                <figure className="img_con">
-                  <Image
-                    alt="mykitchen icons"
-                    width="80px"
-                    height="80px"
-                    src="/ball-6.jpg"
-                  />
-                </figure>
-                <p>Easy Personalize</p>
-              </article>
-            </div>
-          </section>
-        </div>
-        <button className="skip">Skip</button>
+            <button className="next_btn">
+              Next <i class="bi bi-caret-right"></i>
+            </button>
+          </div>
+        </main>
       </LandingWrap>
     </>
   );
 }
 const LandingWrap = styled.main`
+  position: relative;
   width: 100vw;
   max-width: 1440px;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0 auto;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.6);
@@ -138,19 +155,75 @@ const LandingWrap = styled.main`
   background-size: cover;
   background-position: center;
   padding-top: 20px;
-  .skip {
-    color: white;
-    display: block;
-    margin: 0 auto;
-    margin-top: 20px;
-    border: 2px solid pink;
-    background-color: transparent;
-    width: 90%;
-    padding: 15px;
-    border-radius: 25px;
-    margin-top: 20px;
+  /* ......end of container styles........ */
+  main {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
   }
-  /* .............end of container styles................ */
+  /* ..............end of main parent styling............. */
+  .footer_con {
+    .progress_con {
+      display: flex;
+      justify-content: center;
+      span {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        border: 2px solid white;
+        margin: 0 3px;
+      }
+      span:nth-of-type(1) {
+        background-color: ${(props) => (props.page === 1 ? "pink" : "")};
+      }
+      span:nth-of-type(2) {
+        background-color: ${(props) => (props.page === 2 ? "pink" : "")};
+      }
+      span:nth-of-type(3) {
+        background-color: ${(props) => (props.page === 3 ? "pink" : "")};
+      }
+    }
+    .next_btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      margin: 0 auto;
+      margin-top: 20px;
+      border: 2px solid pink;
+      background-color: transparent;
+      width: 90%;
+      padding: 10px;
+      border-radius: 25px;
+      margin-top: 20px;
+      font-size: 20px;
+      i {
+        margin-bottom: -3px;
+      }
+    }
+  }
+  /* .............end of footer_con  styles ................. */
+  .arrow_btn_con {
+    button {
+      position: absolute;
+      border: none;
+      outline: none;
+      font-size: 50px;
+      color: rgba(255, 255, 255, 0);
+      top: 50%;
+      z-index: 2;
+      background: none;
+      animation: blink 5s linear infinite;
+    }
+    button:first-of-type {
+      right: 5px;
+    }
+    button:last-of-type {
+      left: 5px;
+    }
+  }
+  /* ..............end of arrow btn styles......... */
   .brand_name {
     display: flex;
     align-items: center;
@@ -185,13 +258,15 @@ const LandingWrap = styled.main`
     border-bottom: 2px dotted pink;
     color: white;
     text-align: center;
-    /* background: rgba(0, 0, 0, 0.5); */
+    width: max-content;
+    margin: 0 auto;
     h1 {
       font-size: 20px;
       margin-bottom: 10px;
     }
     ul {
       margin-bottom: 10px;
+      list-style: none;
     }
     p {
       color: pink;
@@ -249,12 +324,35 @@ const LandingWrap = styled.main`
       transform: rotate(180deg);
     }
   }
-  @media screen and (min-width: 768px) {
-    /* .brand_offers_con {
-      article {
-        display: flex;
+  @keyframes blink {
+    40%,
+    60% {
+      color: white;
+    }
+  }
+  @media screen and (min-width: 769px) {
+    main {
+      max-width: 768px;
+      margin: 0 auto;
+    }
+    .arrow_btn_con {
+      button:first-of-type {
+        right: 10%;
       }
-    } */
+      button:last-of-type {
+        left: 10%;
+      }
+    }
+  }
+  @media screen and (min-width: 1001px) {
+    .arrow_btn_con {
+      button:first-of-type {
+        right: 15%;
+      }
+      button:last-of-type {
+        left: 15%;
+      }
+    }
   }
 `;
 // border: 2px solid red;
