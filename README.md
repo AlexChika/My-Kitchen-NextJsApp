@@ -1,6 +1,6 @@
 ## "Whisper, The Blog For All."
 
-check this out at [https://whispper.vercel.app/](https://whispper.vercel.app/)
+check this out at [https://mykitchen.vercel.app/](https://mykitchen.vercel.app/)
 
 This Is a Modern Blog with CRUD suport built with Next.Js \
 A FullStack Modern Blog Implementing Create, Read, Update and Delete funtionality
@@ -16,4 +16,5 @@ A FullStack Modern Blog Implementing Create, Read, Update and Delete funtionalit
 
 built with Next.Js \
 Styled Components \
-and MongoDb as database \
+and sanity as database \
+powered by mealDB \
