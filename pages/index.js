@@ -12,9 +12,9 @@ export default function Home() {
       <Header />
       <LandingWrap bg={deviceWidth}>
         <div className="brand_name">
-          <i class="fi fi-sr-utensils"></i>
+          <i className="fi fi-sr-utensils"></i>
           <h2>My Kitchen</h2>
-          <i class="fi fi-sr-pot"></i>
+          <i className="fi fi-sr-pot"></i>
         </div>
         {/* ......end of brand name */}
         <div>
@@ -23,7 +23,7 @@ export default function Home() {
         </div>
         <div className="middle_text_con">
           <h1>
-            Thank You <i class="fi fi-sr-heart"></i> For Joining Kitchen
+            Thank You <i className="fi fi-sr-heart"></i> For Joining Kitchen
           </h1>
           <ul>
             <li>
