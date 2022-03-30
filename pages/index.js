@@ -27,13 +27,14 @@ export default function Home() {
           </h1>
           <ul>
             <li>
-              <i class="fi fi-sr-star"></i> {"   "} Watch Video Tutorials
+              <i className="fi fi-sr-star"></i> {"   "} Watch Video Tutorials
             </li>
             <li>
-              <i class="fi fi-sr-star"></i> {"   "} Become An Instant Chef
+              <i className="fi fi-sr-star"></i> {"   "} Become An Instant Chef
             </li>
             <li>
-              <i class="fi fi-sr-star"></i> {"   "} Prepare Your Favorite Meal
+              <i className="fi fi-sr-star"></i> {"   "} Prepare Your Favorite
+              Meal
             </li>
           </ul>
           <p>Your Only Step To Becoming A Chef </p>
@@ -43,21 +44,36 @@ export default function Home() {
             <div className="brand_balls_first">
               <article>
                 <figure className="img_con">
-                  <Image width="80px" height="80px" src="/ball-1.jpg" />
+                  <Image
+                    alt="mykitchen icons"
+                    width="80px"
+                    height="80px"
+                    src="/ball-1.jpg"
+                  />
                 </figure>
                 <p>Find Meals</p>
               </article>
               {/* ...... */}
               <article>
                 <figure className="img_con">
-                  <Image width="80px" height="80px" src="/ball-2.jpg" />
+                  <Image
+                    alt="mykitchen icons"
+                    width="80px"
+                    height="80px"
+                    src="/ball-2.jpg"
+                  />
                 </figure>
                 <p>See Tutorials</p>
               </article>
               {/* ....... */}
               <article>
                 <figure className="img_con">
-                  <Image width="80px" height="80px" src="/ball-3.jpg" />
+                  <Image
+                    alt="mykitchen icons"
+                    width="80px"
+                    height="80px"
+                    src="/ball-3.jpg"
+                  />
                 </figure>
                 <p>Save Favourites</p>
               </article>
@@ -65,21 +81,36 @@ export default function Home() {
             <div className="brand_balls_second">
               <article>
                 <figure className="img_con">
-                  <Image width="80px" height="80px" src="/ball-4.jpg" />
+                  <Image
+                    alt="mykitchen icons"
+                    width="80px"
+                    height="80px"
+                    src="/ball-4.jpg"
+                  />
                 </figure>
                 <p>View Recipes</p>
               </article>
               {/* ........ */}
               <article>
                 <figure className="img_con">
-                  <Image width="80px" height="80px" src="/ball-5.jpg" />
+                  <Image
+                    alt="mykitchen icons"
+                    width="80px"
+                    height="80px"
+                    src="/ball-5.jpg"
+                  />
                 </figure>
                 <p>Make TimeTable</p>
               </article>
               {/* ......... */}
               <article>
                 <figure className="img_con">
-                  <Image width="80px" height="80px" src="/ball-6.jpg" />
+                  <Image
+                    alt="mykitchen icons"
+                    width="80px"
+                    height="80px"
+                    src="/ball-6.jpg"
+                  />
                 </figure>
                 <p>Easy Personalize</p>
               </article>
