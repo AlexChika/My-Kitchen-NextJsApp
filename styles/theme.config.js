@@ -15,6 +15,7 @@ export const GlobalStyles = createGlobalStyle`
   padding: 0;
   box-sizing: border-box;
   word-wrap:break-word;
+  font-family: 'Roboto', sans-serif;
 }
 html{
       -ms-text-size-adjust: 100%;
@@ -25,7 +26,7 @@ body {
   width:100vw;
    background: ${({ theme }) => theme.priBg};
    color: ${({ theme }) => theme.text};
-   font-family: sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
    font-weight: 300;
    font-style: normal;
    overflow-wrap: break-word;
