@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import Header from "../components/Header";
 import Image from "next/image";
 export default function Home() {
   const [deviceWidth, setWidth] = useState("");
@@ -10,7 +9,6 @@ export default function Home() {
   });
   return (
     <>
-      <Header />
       <LandingWrap page={pageCount} bg={deviceWidth}>
         <div className="brand_name">
           <i className="fi fi-sr-utensils"></i>
@@ -20,10 +18,10 @@ export default function Home() {
         {/* ......end of brand name */}
         <div className="arrow_btn_con">
           <button className="next">
-            <i class="bi bi-caret-right-fill"></i>
+            <i className="bi bi-caret-right-fill"></i>
           </button>
           <button className="prev">
-            <i class="bi bi-caret-left-fill"></i>
+            <i className="bi bi-caret-left-fill"></i>
           </button>
         </div>
         <main>
@@ -130,7 +128,7 @@ export default function Home() {
               <span></span>
             </div>
             <button className="next_btn">
-              Next <i class="bi bi-caret-right"></i>
+              Next <i className="bi bi-caret-right"></i>
             </button>
           </div>
         </main>
