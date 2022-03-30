@@ -18,7 +18,7 @@ export default function Home() {
         </div>
         {/* ......end of brand name */}
         <div>
-          <button classname="next"></button>
+          <button className="next"></button>
           <button className="prev"></button>
         </div>
         <div className="middle_text_con">
