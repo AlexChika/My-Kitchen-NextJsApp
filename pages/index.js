@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 export default function Home() {
   const [deviceWidth, setWidth] = useState("");
-  const [pageCount, setPageCount] = useState(2);
+  const [pageCount, setPageCount] = useState(3);
   useEffect(() => {
     setWidth(window.innerWidth);
   });
@@ -270,16 +270,119 @@ const SecondPage = ({ pageCount, deviceWidth, handleNextPage }) => {
   );
 };
 const ThirdPage = ({ pageCount, deviceWidth }) => {
+  const [login, setLogin] = useState(ThirdPageLayout);
+  const [input, setInput] = useState("");
+  const error = useRef(null);
+  const handleLogin = () => {
+    setLogin(true);
+  };
+  const handleSignUp = () => {
+    setLogin(false);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+  const handleSignupSubmit = (e) => {
+    e.preventDefault();
+  };
   return (
-    <ThirdPageLayout page={pageCount} bg={deviceWidth}>
-      <h1>hello frm page 3</h1>
+    <ThirdPageLayout login={login} page={pageCount} bg={deviceWidth}>
+      <section className="login_signup_sec">
+        <div className="brand_name">
+          <i className="fi fi-sr-utensils"></i>
+          <h2>My Kitchen</h2>
+          <i className="fi fi-sr-pot"></i>
+        </div>
+        <div className="nav">
+          <button onClick={handleLogin}>Login</button>
+          <p>Or</p>
+          <button onClick={handleSignUp}>SignUp</button>
+        </div>
+        {login && (
+          <div className="login_sec">
+            <div className="heading">
+              <h1>Welcome Back</h1>
+              <p>Please Enter Your Email To Continue</p>
+            </div>
+            <form className="form" onSubmit={handleSubmit}>
+              <div className="input_con">
+                <i className="bi bi-envelope-fill"></i>
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Enter A Valid Email"
+                />
+                <p ref={error}></p>
+              </div>
+              <div className="input_con">
+                <i className="bi bi-house-door-fill"></i>
+                <input type="submit" value="Login" />
+              </div>
+            </form>
+            <div className="footer_con">
+              <p>
+                No account? click <button onClick={handleSignUp}>Here</button>{" "}
+                to register{" "}
+              </p>
+              <p>Or</p>
+              <p>Continue without SignIn?</p>
+              <p>
+                Click <button>Here</button>
+              </p>
+            </div>
+          </div>
+        )}
+        {!login && (
+          <div className="signup_sec">
+            <div className="heading">
+              <h1>Welcome To Kitchen</h1>
+              <p>Your Only Step To Becoming A Chef </p>
+              <p>Enter An Email To Register Instantly</p>
+            </div>
+            <form className="form" onSubmit={handleSignupSubmit}>
+              <div className="input_con">
+                <i className="bi bi-envelope-fill"></i>
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Enter A Valid Email"
+                />
+              </div>
+              <div className="input_con">
+                <i className="bi bi-house-door-fill"></i>
+                <input type="submit" value="SignUp" />
+              </div>
+            </form>
+            <div className="footer_con">
+              <p>
+                Already Registerd? click{" "}
+                <button onClick={handleLogin}>Here</button> to Login{" "}
+              </p>
+              <p>Or</p>
+              <p>Continue without SignIn?</p>
+              <p>
+                Click <button>Here</button>
+              </p>
+            </div>
+          </div>
+        )}
+        <div className="input_con">
+          <i className="bi bi-house-door-fill"></i>
+          <input type="submit" value="Continue Without SignIn" />
+        </div>
+      </section>
     </ThirdPageLayout>
   );
 };
 const LandingPageLayout = styled.div`
   width: 100%;
   min-height: 100vh;
-  border: 2px solid red;
   position: relative;
   background: black;
   transition: all 0.3s linear;
@@ -782,9 +885,158 @@ const SecondPageLayout = styled.main`
 const ThirdPageLayout = styled.main`
   animation: opacity 1s linear;
   transition: all 0.3s linear;
-
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.4);
   min-height: 100vh;
+  color: white;
+  .login_signup_sec {
+    padding-top: 20px;
+    max-width: 768px;
+    margin: 0 auto;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-image: url(/loginbg.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)),
+      url(/loginbg.jpg);
+    border: 7px dashed white;
+  }
+  /* .....end of signUp......section.. */
+  .brand_name {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 2px solid pink;
+    padding: 7px 10px;
+    margin: 0 auto;
+    border-radius: 30px;
+    width: 280px;
+    transition: all 0.25s linear;
+    h2,
+    i {
+      font-size: 30px;
+      color: white;
+      text-align: center;
+      text-shadow: 2px 2px 15px black, 5px 5px 0px pink;
+      font-family: "Lobster", cursive;
+      transition: all 0.25s linear;
+    }
+  }
+  .brand_name:hover,
+  brand_name:focus {
+    border: 2px solid white;
+    h1,
+    i {
+      color: pink;
+      text-shadow: 2px 2px 15px black, 5px 5px 0px white;
+    }
+  }
+  /* .....end of brand name */
+  .nav {
+    width: 280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    button {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: none;
+      outline: none;
+      padding: 10px 20px;
+    }
+    button:first-of-type {
+      border-bottom: ${(props) => (props.login ? "2px solid" : "")};
+    }
+    button:last-of-type {
+      border-bottom: ${(props) => (props.login ? "" : "2px solid")};
+    }
+  }
+  /* .....end of nav...... */
+  .input_con {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    margin: 0 auto;
+    padding: 0 10px;
+    /* margin-top: 40px; */
+    input {
+      color: white;
+      border-radius: 20px;
+      padding: 10px;
+      background: transparent;
+      outline: none;
+      border: none;
+      width: 100%;
+      height: 100%;
+    }
+    input::placeholder {
+      color: white;
+      text-align: center;
+    }
+  }
+  /*  */
+  .heading {
+    text-align: center;
+    margin-top: 30px;
+    font-style: italic;
+    p {
+      font-size: 14px;
+    }
+  }
+  /* ......end of heading....... */
+  .form {
+    width: 280px;
+    margin: 0 auto;
+    margin-top: 30px;
+    .input_con {
+      display: flex;
+      align-items: center;
+      width: 70%;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      margin: 0 auto;
+      padding: 0 10px;
+      margin-bottom: 10px;
+      input {
+        color: white;
+        border-radius: 20px;
+        padding: 10px;
+        background: transparent;
+        outline: none;
+        border: none;
+        width: 100%;
+        height: 100%;
+      }
+      input::placeholder {
+        color: white;
+        text-align: center;
+      }
+    }
+    .input_con:last-of-type {
+      border: 2px solid pink;
+    }
+  }
+  .footer_con {
+    margin: 0 auto;
+    margin: 30px 0;
+    text-align: center;
+    p {
+      margin-bottom: 10px;
+    }
+    button {
+      border: none;
+      outline: none;
+      background: transparent;
+      color: pink;
+      font-size: 18px;
+    }
+  }
+  /* .........end of form.......... */
+  /*............................... end of login section styles ...........................*/
+
   @keyframes opacity {
     0% {
       opacity: 0;
