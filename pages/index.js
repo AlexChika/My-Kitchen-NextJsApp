@@ -270,7 +270,7 @@ const SecondPage = ({ pageCount, deviceWidth, handleNextPage }) => {
   );
 };
 const ThirdPage = ({ pageCount, deviceWidth }) => {
-  const [login, setLogin] = useState(ThirdPageLayout);
+  const [login, setLogin] = useState(false);
   const [input, setInput] = useState("");
   const error = useRef(null);
   const handleLogin = () => {
@@ -886,7 +886,6 @@ const ThirdPageLayout = styled.main`
   animation: opacity 1s linear;
   transition: all 0.3s linear;
   background: rgba(0, 0, 0, 0.4);
-  min-height: 100vh;
   color: white;
   .login_signup_sec {
     padding-top: 20px;
@@ -894,7 +893,7 @@ const ThirdPageLayout = styled.main`
     margin: 0 auto;
     background-size: cover;
     background-repeat: no-repeat;
-    height: 100vh;
+    min-height: 100vh;
     background-image: url(/loginbg.jpg);
     background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)),
       url(/loginbg.jpg);
@@ -1021,7 +1020,7 @@ const ThirdPageLayout = styled.main`
   }
   .footer_con {
     margin: 0 auto;
-    margin: 30px 0;
+    margin-top: 30px;
     text-align: center;
     p {
       margin-bottom: 10px;
@@ -1035,6 +1034,14 @@ const ThirdPageLayout = styled.main`
     }
   }
   /* .........end of form.......... */
+  .signup_sec,
+  .login_sec {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
   /*............................... end of login section styles ...........................*/
 
   @keyframes opacity {
