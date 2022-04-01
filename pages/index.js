@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Image from "next/image";
-export default function Home() {
+import Modal from "../components/Modal";
+export default function Landing() {
   const [deviceWidth, setWidth] = useState("");
-  const [pageCount, setPageCount] = useState(3);
+  const [pageCount, setPageCount] = useState(1);
   useEffect(() => {
     setWidth(window.innerWidth);
   });
@@ -271,6 +272,7 @@ const SecondPage = ({ pageCount, deviceWidth, handleNextPage }) => {
 };
 const ThirdPage = ({ pageCount, deviceWidth }) => {
   const [login, setLogin] = useState(false);
+  const [modal, setModal] = useState(false);
   const [input, setInput] = useState("");
   const error = useRef(null);
   const handleLogin = () => {
@@ -288,6 +290,30 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
   return (
     <ThirdPageLayout login={login} page={pageCount} bg={deviceWidth}>
       <section className="login_signup_sec">
+        <Modal modal={modal} setModal={setModal}>
+          <div className="login_modal_text">
+            <h2
+              style={{
+                textAlign: "center",
+                padding: "10px",
+              }}
+              className=""
+            >
+              Are You Sure???
+            </h2>
+            <p>Your Data wont be synced across multiple Devices </p>
+            <ul>
+              <li>Your TimeTables</li>
+              <li>Your Saved Favourites</li>
+              <li>Your Progress</li>
+            </ul>
+            <p>Would be lost on another Device</p>
+            <h4>Continue Anyways?</h4>
+            <div className="input_con">
+              <input type="button" value="Continue To Kitchen" />
+            </div>
+          </div>
+        </Modal>
         <div className="brand_name">
           <i className="fi fi-sr-utensils"></i>
           <h2>My Kitchen</h2>
@@ -330,7 +356,7 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
               <p>Or</p>
               <p>Continue without SignIn?</p>
               <p>
-                Click <button>Here</button>
+                Click <button onClick={() => setModal(true)}>Here</button>
               </p>
             </div>
           </div>
@@ -367,14 +393,18 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
               <p>Or</p>
               <p>Continue without SignIn?</p>
               <p>
-                Click <button>Here</button>
+                Click <button onClick={() => setModal(true)}>Here</button>
               </p>
             </div>
           </div>
         )}
         <div className="input_con">
           <i className="bi bi-house-door-fill"></i>
-          <input type="submit" value="Continue Without SignIn" />
+          <input
+            onClick={() => setModal(true)}
+            type="button"
+            value="Continue Without SignIn"
+          />
         </div>
       </section>
     </ThirdPageLayout>
@@ -386,6 +416,22 @@ const LandingPageLayout = styled.div`
   position: relative;
   background: black;
   transition: all 0.3s linear;
+  .login_modal_text {
+    text-align: center;
+    p,
+    ul {
+      font-weight: 100 !important;
+    }
+    ul {
+      padding: 10px;
+      width: max-content;
+      margin: 0 auto;
+    }
+    h4 {
+      padding: 5px;
+    }
+  }
+  /* ..............end of login_modal_text............. */
   .arrow_btn_con {
     button {
       position: fixed;
@@ -436,6 +482,14 @@ const LandingPageLayout = styled.div`
     40%,
     60% {
       color: white;
+    }
+  }
+
+  @media screen and (max-width: 546px) {
+    .login_modal_text {
+      h2 {
+        font-size: 20px;
+      }
     }
   }
   @media screen and (min-width: 769px) {
