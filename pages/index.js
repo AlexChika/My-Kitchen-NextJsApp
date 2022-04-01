@@ -2,12 +2,21 @@ import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import Image from "next/image";
 import Modal from "../components/Modal";
+import Router from "next/router";
 export default function Landing() {
+  const [load, setLoad] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem("status")) {
+      Router.push("/kitchendashboard");
+    } else {
+      setLoad(true);
+    }
+  }, []);
   const [deviceWidth, setWidth] = useState("");
   const [pageCount, setPageCount] = useState(1);
   useEffect(() => {
     setWidth(window.innerWidth);
-  });
+  }, []);
   const handlePrevPage = () => {
     if (pageCount === 1) {
       return;
@@ -21,39 +30,46 @@ export default function Landing() {
     setPageCount(pageCount + 1);
   };
   return (
-    <LandingPageLayout page={pageCount}>
-      <div className="arrow_btn_con">
-        <button onClick={handleNextPage} className="next">
-          <i className="bi bi-caret-right-fill"></i>
-        </button>
-        <button onClick={handlePrevPage} className="prev">
-          <i className="bi bi-caret-left-fill"></i>
-        </button>
-      </div>
-      <div className="progress_con">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+    <>
+      {" "}
+      {load ? (
+        <LandingPageLayout page={pageCount}>
+          <div className="arrow_btn_con">
+            <button onClick={handleNextPage} className="next">
+              <i className="bi bi-caret-right-fill"></i>
+            </button>
+            <button onClick={handlePrevPage} className="prev">
+              <i className="bi bi-caret-left-fill"></i>
+            </button>
+          </div>
+          <div className="progress_con">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
 
-      {pageCount === 1 && (
-        <FirstPage
-          pageCount={pageCount}
-          handleNextPage={handleNextPage}
-          deviceWidth={deviceWidth}
-        />
-      )}
-      {pageCount === 2 && (
-        <SecondPage
-          pageCount={pageCount}
-          handleNextPage={handleNextPage}
-          deviceWidth={deviceWidth}
-        />
-      )}
-      {pageCount === 3 && (
-        <ThirdPage pageCount={pageCount} deviceWidth={deviceWidth} />
-      )}
-    </LandingPageLayout>
+          {pageCount === 1 && (
+            <FirstPage
+              pageCount={pageCount}
+              handleNextPage={handleNextPage}
+              deviceWidth={deviceWidth}
+            />
+          )}
+          {pageCount === 2 && (
+            <SecondPage
+              pageCount={pageCount}
+              handleNextPage={handleNextPage}
+              deviceWidth={deviceWidth}
+            />
+          )}
+          {pageCount === 3 && (
+            <ThirdPage pageCount={pageCount} deviceWidth={deviceWidth} />
+          )}
+        </LandingPageLayout>
+      ) : (
+        ""
+      )}{" "}
+    </>
   );
 }
 const FirstPage = ({ pageCount, deviceWidth, handleNextPage }) => {
@@ -275,17 +291,18 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
   const [modal, setModal] = useState(false);
   const [input, setInput] = useState("");
   const error = useRef(null);
-  const handleLogin = () => {
-    setLogin(true);
-  };
-  const handleSignUp = () => {
-    setLogin(false);
-  };
-  const handleSubmit = (e) => {
+  const handleSigninSubmit = (e) => {
     e.preventDefault();
   };
   const handleSignupSubmit = (e) => {
     e.preventDefault();
+  };
+  const continueWithoutLogin = (e) => {
+    localStorage.setItem(
+      "status",
+      JSON.stringify({ email: null, local: true })
+    );
+    Router.push("/kitchendashboard");
   };
   return (
     <ThirdPageLayout login={login} page={pageCount} bg={deviceWidth}>
@@ -297,7 +314,6 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
                 textAlign: "center",
                 padding: "10px",
               }}
-              className=""
             >
               Are You Sure???
             </h2>
@@ -310,7 +326,11 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
             <p>Would be lost on another Device</p>
             <h4>Continue Anyways?</h4>
             <div className="input_con">
-              <input type="button" value="Continue To Kitchen" />
+              <input
+                onClick={continueWithoutLogin}
+                type="button"
+                value="Continue To Kitchen"
+              />
             </div>
           </div>
         </Modal>
@@ -320,9 +340,9 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
           <i className="fi fi-sr-pot"></i>
         </div>
         <div className="nav">
-          <button onClick={handleLogin}>Login</button>
+          <button onClick={() => setLogin(true)}>Login</button>
           <p>Or</p>
-          <button onClick={handleSignUp}>SignUp</button>
+          <button onClick={() => setLogin(false)}>SignUp</button>
         </div>
         {login && (
           <div className="login_sec">
@@ -330,7 +350,7 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
               <h1>Welcome Back</h1>
               <p>Please Enter Your Email To Continue</p>
             </div>
-            <form className="form" onSubmit={handleSubmit}>
+            <form className="form" onSubmit={handleSigninSubmit}>
               <div className="input_con">
                 <i className="bi bi-envelope-fill"></i>
                 <input
@@ -350,8 +370,9 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
             </form>
             <div className="footer_con">
               <p>
-                No account? click <button onClick={handleSignUp}>Here</button>{" "}
-                to register{" "}
+                No account? click{" "}
+                <button onClick={() => setLogin(false)}>Here</button> to
+                register{" "}
               </p>
               <p>Or</p>
               <p>Continue without SignIn?</p>
@@ -388,7 +409,7 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
             <div className="footer_con">
               <p>
                 Already Registerd? click{" "}
-                <button onClick={handleLogin}>Here</button> to Login{" "}
+                <button onClick={() => setLogin(true)}>Here</button> to Login{" "}
               </p>
               <p>Or</p>
               <p>Continue without SignIn?</p>
