@@ -143,7 +143,7 @@ export default function KitchenDashboard() {
                   />
                   <h4>We Searched Everywhere</h4>
                   <h4>
-                    We Couldn't Find{" "}
+                    We Couldn&apos;t Find{" "}
                     <span className="searchword">{`"${searchword.toUpperCase()}"`}</span>
                   </h4>
                 </div>
