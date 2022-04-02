@@ -8,7 +8,7 @@ const Modal = (props) => {
     <ModalWrap modal={modal} className={` `}>
       <div className="modal-body">
         <button onClick={() => setModal(!modal)} className="modal-btn btn">
-          x
+          <i className="bi bi-x-circle"></i>
         </button>
         <div className="modal-content">{children}</div>
       </div>
@@ -51,8 +51,8 @@ const ModalWrap = styled.div`
     position: absolute;
     right: 0px;
     font-weight: 300;
-    font-size: 32px;
-    padding: 0 1em;
+    font-size: 20px;
+    padding: 0.5em 1em;
     color: white;
     border: none;
     background: transparent;
