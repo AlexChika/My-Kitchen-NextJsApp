@@ -12,7 +12,7 @@ export default function KitchenDashboard() {
   const [status, setStatus] = useState({
     isError: false,
     isLoading: false,
-    isFetched: true,
+    isFetched: false,
     notFound: false,
   });
   const [searchValue, setSearchValue] = useState("");
@@ -88,6 +88,9 @@ export default function KitchenDashboard() {
   };
   const handleRandom = () => {
     console.log("I was hit");
+  };
+  const handleSingleMeal = () => {
+    console.log("I am single meal");
   };
   return (
     <>
@@ -168,19 +171,23 @@ export default function KitchenDashboard() {
             {status.isFetched && (
               <div className="containers fetched">
                 <h2>Search Results For {searchword.toUpperCase()}</h2>
-                {
-                  <div className="meal_grid_con">
-                    <div className="meal_card"></div>
-                    <div className="meal_card"></div>
-                    <div className="meal_card"></div>
-                    <div className="meal_card"></div>
-                    <div className="meal_card"></div>
-                    <div className="meal_card"></div>
-                    <div className="meal_card"></div>
-                    <div className="meal_card"></div>
-                    <div className="meal_card"></div>
-                  </div>
-                }
+                <div className="meal_grid_con">
+                  {mealsarr.map((meal) => (
+                    <div
+                      onClick={handleSingleMeal}
+                      key={meal.idMeal}
+                      className="meal_card"
+                    >
+                      <Image
+                        layout="fill"
+                        placeholder="blurDataURL"
+                        src={meal.strMealThumb}
+                        alt={meal.strMeal}
+                      />
+                      <p>{meal.strMeal}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </section>
@@ -255,14 +262,14 @@ const Main = styled.main`
     }
     .meal_card {
       border: 2px solid white;
-      /* width: 140px; */
-      height: 140px;
+      position: relative;
     }
     .meal_grid_con {
       /* border: 2px solid blue; */
       display: grid;
-      grid-template-columns: repeat(2, 140px);
-      /* grid-template-rows: repeat(140px, 4); */
+      place-content: center;
+      grid-template-columns: repeat(auto-fill, 140px);
+      grid-auto-rows: 140px;
       gap: 1em;
     }
   }

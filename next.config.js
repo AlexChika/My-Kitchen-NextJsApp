@@ -4,6 +4,9 @@ const nextConfig = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    domains: ["www.themealdb.com"],
+  },
   reactStrictMode: true,
 };
 
