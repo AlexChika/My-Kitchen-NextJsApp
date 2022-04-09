@@ -5,7 +5,7 @@ import { findMeal } from "../../../utils/fetchers";
 import Image from "next/image";
 import styled from "styled-components";
 import { BallTriangle } from "react-loader-spinner";
-const index = () => {
+const Index = () => {
   const [load, setLoad] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [instruction, setInstruction] = useState(false);
@@ -121,7 +121,7 @@ const index = () => {
                       ? mealInfo[0].strTags
                         ? mealInfo[0].strTags
                             .split(",")
-                            .map((tag, index) => <p key={index}>{tag}</p>)
+                            .map((tag, Index) => <p key={index}>{tag}</p>)
                         : "None"
                       : mealInfo[0].strTags
                       ? mealInfo[0].strTags.substr(0, 10) + ".."
@@ -253,7 +253,7 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
 const Main = styled.main`
   color: white;
   button {
