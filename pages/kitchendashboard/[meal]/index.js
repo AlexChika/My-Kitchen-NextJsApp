@@ -188,7 +188,7 @@ const Index = () => {
               </div>
               <div className="youtube">
                 <h2>Watch On Youtube</h2>
-                {mealInfo.strYoutube ? (
+                {mealInfo[0].strYoutube ? (
                   <article>
                     <figure className="youtube_con">
                       <iframe
