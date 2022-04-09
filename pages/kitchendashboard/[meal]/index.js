@@ -121,7 +121,7 @@ const Index = () => {
                       ? mealInfo[0].strTags
                         ? mealInfo[0].strTags
                             .split(",")
-                            .map((tag, Index) => <p key={index}>{tag}</p>)
+                            .map((tag, index) => <p key={index}>{tag}</p>)
                         : "None"
                       : mealInfo[0].strTags
                       ? mealInfo[0].strTags.substr(0, 10) + ".."
