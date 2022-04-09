@@ -22,7 +22,7 @@ export async function findMeals(food) {
 export async function findMeal(id) {
   try {
     const data = await fetch(
-      `https://themealdb.com/api/json/v1/1/search.php?i=${id}`
+      `https://themealdb.com/api/json/v1/1/lookup.php?i=${id}`
     );
     const meal = await data.json();
     return {

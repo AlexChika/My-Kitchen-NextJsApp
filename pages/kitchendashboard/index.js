@@ -1,22 +1,22 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Router from "next/router";
 import styled from "styled-components";
-import { findMeals, findMeal } from "../utils/fetchers";
-import Modal from "../components/Modal";
+import { findMeals } from "../../utils/fetchers";
+import Modal from "../../components/Modal";
 import { RotatingLines } from "react-loader-spinner";
 export default function KitchenDashboard() {
   const [searchword, setSearchword] = useState("");
   const [load, setLoad] = useState(false);
   const [modal, setModal] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [mealsarr, setMealsarr] = useState([]);
   const [status, setStatus] = useState({
     isError: false,
     isLoading: false,
     isFetched: false,
     notFound: false,
   });
-  const [searchValue, setSearchValue] = useState("");
-  const [mealsarr, setMealsarr] = useState([]);
   useEffect(() => {
     if (!localStorage.getItem("status")) {
       Router.push("/");
@@ -48,7 +48,7 @@ export default function KitchenDashboard() {
       setSearchValue("Enter Meal or Click shuffle");
       return;
     }
-    if (searchValue.split(" ").length > 1) {
+    if (searchValue.trim().split(" ").length > 1) {
       setSearchValue("Enter one word");
       return;
     }
@@ -89,8 +89,9 @@ export default function KitchenDashboard() {
   const handleRandom = () => {
     console.log("I was hit");
   };
-  const handleSingleMeal = () => {
-    console.log("I am single meal");
+  const handleSingleMeal = (id) => {
+    console.log(id);
+    // router.push("/kitchendashboard/meal");
   };
   return (
     <>
@@ -130,7 +131,7 @@ export default function KitchenDashboard() {
                 <h4>Please Try Again</h4>
               </div>
             )}
-            {/*  */}
+            {/* ................. */}
             {status.notFound && (
               <div className="containers notfound">
                 <h1>Sorry!!!</h1>
@@ -155,7 +156,7 @@ export default function KitchenDashboard() {
                 </div>
               </div>
             )}
-            {/*  */}
+            {/* .................. */}
             {status.isLoading && (
               <div className="containers loading">
                 <RotatingLines
@@ -167,25 +168,32 @@ export default function KitchenDashboard() {
                 <h4>One Moment...</h4>
               </div>
             )}
-            {/*  */}
+            {/* ...................... */}
             {status.isFetched && (
               <div className="containers fetched">
                 <h2>Search Results For {searchword.toUpperCase()}</h2>
                 <div className="meal_grid_con">
                   {mealsarr.map((meal) => (
-                    <div
-                      onClick={handleSingleMeal}
+                    <a
                       key={meal.idMeal}
-                      className="meal_card"
+                      href={`/kitchendashboard/${
+                        meal.strMeal + "=" + meal.idMeal
+                      }`}
                     >
-                      <Image
-                        layout="fill"
-                        placeholder="blurDataURL"
-                        src={meal.strMealThumb}
-                        alt={meal.strMeal}
-                      />
-                      <p>{meal.strMeal}</p>
-                    </div>
+                      <div
+                        className="meal_card"
+                      >
+                        <Image
+                          layout="fill"
+                          placeholder="blurDataURL"
+                          src={meal.strMealThumb}
+                          alt={meal.strMeal}
+                        />
+                        <div className="meal_title">
+                          <h4>{meal.strMeal}</h4>
+                        </div>
+                      </div>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -260,17 +268,28 @@ const Main = styled.main`
       font-family: "Lobster", cursive;
       margin-bottom: 15px;
     }
+
     .meal_card {
       border: 2px solid white;
       position: relative;
+      min-height: 100%;
+      .meal_title {
+        height: 40px;
+        width: 100%;
+        position: absolute;
+        bottom: 0%;
+        transform: translateY(125%);
+        text-align: center;
+        color: white;
+      }
     }
     .meal_grid_con {
-      /* border: 2px solid blue; */
       display: grid;
       place-content: center;
-      grid-template-columns: repeat(auto-fill, 140px);
-      grid-auto-rows: 140px;
+      grid-template-columns: repeat(auto-fill, 250px);
+      grid-auto-rows: 250px;
       gap: 1em;
+      row-gap: 3em;
     }
   }
   /* ..........end of containers.fetched styling.......... */
@@ -299,6 +318,38 @@ const Main = styled.main`
       }
       button {
         flex: 0.2;
+      }
+    }
+  }
+  @media screen and (min-width: 340px) {
+    .containers.fetched {
+      .meal_grid_con {
+        grid-template-columns: repeat(auto-fill, 150px);
+        grid-auto-rows: 150px;
+      }
+    }
+  }
+  @media screen and (min-width: 370px) {
+    .containers.fetched {
+      .meal_grid_con {
+        grid-template-columns: repeat(auto-fill, 165px);
+        grid-auto-rows: 165px;
+      }
+    }
+  }
+  @media screen and (min-width: 400px) {
+    .containers.fetched {
+      .meal_grid_con {
+        grid-template-columns: repeat(auto-fill, 180px);
+        grid-auto-rows: 180px;
+      }
+    }
+  }
+  @media screen and (min-width: 440px) {
+    .containers.fetched {
+      .meal_grid_con {
+        grid-template-columns: repeat(auto-fill, 200px);
+        grid-auto-rows: 200px;
       }
     }
   }

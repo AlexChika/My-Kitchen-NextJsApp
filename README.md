@@ -1,9 +1,10 @@
-## "Whisper, The Blog For All."
+## "My Kitchens, Your Mobile Kitchen."
 
 check this out at [https://mykitchen.vercel.app/](https://mykitchen.vercel.app/)
 
-This Is a Modern Blog with CRUD suport built with Next.Js \
-A FullStack Modern Blog Implementing Create, Read, Update and Delete funtionality
+A mobile FirstKitchen App built with Next.Js \
+A FullStack Modern App Implementing Create, Read, Update and Delete funtionality
+powered by sanity and mealdb
 
 ### `Feauturing`
 

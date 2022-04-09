@@ -4,10 +4,10 @@ import Image from "next/image";
 import Modal from "../components/Modal";
 import Router from "next/router";
 export default function Landing() {
-  const [load, setLoad] = useState(false);
+  const [load, setLoad] = useState(true);
   useEffect(() => {
     if (localStorage.getItem("status")) {
-      Router.push("/kitchendashboard");
+      // Router.push("/kitchendashboard");
     } else {
       setLoad(true);
     }

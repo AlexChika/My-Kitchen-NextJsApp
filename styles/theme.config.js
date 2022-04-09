@@ -17,9 +17,18 @@ export const GlobalStyles = createGlobalStyle`
   word-wrap:break-word;
   font-family: 'Roboto', sans-serif;
 }
+/* Change the white to any color */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+  box-shadow: 0 0 0 30px rgb(26, 26, 39) inset !important;
+    -webkit-box-shadow: 0 0 0 30px rgb(26, 26, 39) inset !important;
+}
 html{
       -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
+     background: rgb(26, 26, 39);
 }
 /*
 body {
