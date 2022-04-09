@@ -420,7 +420,6 @@ const Section = styled.section`
     }
   }
 `;
-// https://www.youtube.com/watch?v=wWGwz0iBmvU
 /*
 Filter by Category
 www.themealdb.com/api/json/v1/1/filter.php?c=Seafood
