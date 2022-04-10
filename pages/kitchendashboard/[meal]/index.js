@@ -110,7 +110,7 @@ const Index = () => {
                 <script
                   async
                   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5656452972473632"
-                  crossorigin="anonymous"
+                  crossOrigin="anonymous"
                 ></script>
                 <meta content={mealInfo[0].strMeal} property="og:title" />
                 <meta content="" property="og:description" />
