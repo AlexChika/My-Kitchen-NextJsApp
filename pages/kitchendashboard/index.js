@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { findMeals } from "../../utils/fetchers";
 import Modal from "../../components/Modal";
 import { RotatingLines } from "react-loader-spinner";
+import Header from "../../components/Header";
 export default function KitchenDashboard() {
   const [searchword, setSearchword] = useState("");
   const [load, setLoad] = useState(false);
@@ -78,7 +79,6 @@ export default function KitchenDashboard() {
       return;
     }
     setMealsarr(meals.meals);
-    console.log(mealsarr);
     setStatus({
       isError: false,
       isLoading: false,
@@ -95,6 +95,24 @@ export default function KitchenDashboard() {
   };
   return (
     <>
+      <Header>
+        <meta
+          name="description"
+          content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
+        />
+        <meta content="My Kitchen | Search For Meals" property="og:title" />
+        <meta
+          content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
+          property="og:description"
+        />
+        <meta content="article" property="og:type" />
+        <meta
+          content={`https://mykitchen.vercel.app/kitchendashboard`}
+          property="og:url"
+        />
+        <meta content="mykitchen.vercel.app" property="og:site_name" />
+        <title>My Kitchen | Search For Meals</title>
+      </Header>
       {load ? (
         <Main>
           <Modal modal={modal} setModal={setModal} />
@@ -180,9 +198,7 @@ export default function KitchenDashboard() {
                         meal.strMeal + "=" + meal.idMeal
                       }`}
                     >
-                      <div
-                        className="meal_card"
-                      >
+                      <div className="meal_card">
                         <Image
                           layout="fill"
                           placeholder="blurDataURL"

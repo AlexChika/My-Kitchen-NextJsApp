@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import Modal from "../components/Modal";
 import Router from "next/router";
+import Header from "../components/Header";
 export default function Landing() {
   const [load, setLoad] = useState(true);
   useEffect(() => {
@@ -34,6 +35,24 @@ export default function Landing() {
       {" "}
       {load ? (
         <LandingPageLayout page={pageCount}>
+          <Header>
+            <meta
+              name="description"
+              content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
+            />
+            <meta
+              content="My Kitchen | Your Only Step To Becoming A Chef"
+              property="og:title"
+            />
+            <meta
+              content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
+              property="og:description"
+            />
+            <meta content="article" property="og:type" />
+            <meta content={`https://mykitchen.vercel.app/`} property="og:url" />
+            <meta content="mykitchen.vercel.app" property="og:site_name" />
+            <title>My Kitchen | Your Only Step To Becoming A Chef</title>
+          </Header>
           <div className="arrow_btn_con">
             <button onClick={handleNextPage} className="next">
               <i className="bi bi-caret-right-fill"></i>

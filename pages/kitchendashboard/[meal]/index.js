@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef } from "react";
-import Script from "next/script";
+import { useState, useEffect } from "react";
 import { findMeal } from "../../../utils/fetchers";
 import Image from "next/image";
 import styled from "styled-components";
 import { BallTriangle } from "react-loader-spinner";
+import Header from "../../../components/Header";
 const Index = () => {
   const [load, setLoad] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -30,6 +30,17 @@ const Index = () => {
   const getId = (link) => link.split("=")[1];
   const router = useRouter();
   useEffect(() => {
+    (function () {
+      var cx = "4a5e535d2c0acf575";
+      var gcse = document.createElement("script");
+      gcse.type = "text/javascript";
+      gcse.async = true;
+      gcse.src = "https://cse.google.com/cse.js?cx=" + cx;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(gcse, s);
+    })();
+  }, []);
+  useEffect(() => {
     const route = router && router.query["meal"];
     if (route) {
       if (!route.includes("=")) {
@@ -44,7 +55,6 @@ const Index = () => {
     if (id) {
       setStatus({ isError: false, isFetched: false, isLoading: true });
       const { meal, isError } = await findMeal(id);
-      console.log(meal);
       if (isError || meal.meals === null) {
         setStatus({ isFetched: false, isLoading: false, isError: true });
         return;
@@ -61,6 +71,13 @@ const Index = () => {
   }, [router]);
   return (
     <>
+      <Header>
+        <meta
+          name="description"
+          content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
+        />
+        <title>My Kitchen | meal info</title>
+      </Header>
       {load ? (
         <Main>
           {status.isError && (
@@ -88,162 +105,172 @@ const Index = () => {
             </div>
           )}
           {status.isFetched && (
-            <Section className="container fetched">
-              <h1 className="heading">{mealInfo[0].strMeal}</h1>
-              <div className="image">
-                <Image
-                  layout="fill"
-                  priority
-                  placeholder="blurDataURL"
-                  src={mealInfo[0].strMealThumb}
-                  alt={mealInfo[0].strMeal}
+            <>
+              <Header>
+                <script
+                  async
+                  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5656452972473632"
+                  crossorigin="anonymous"
+                ></script>
+                <meta content={mealInfo[0].strMeal} property="og:title" />
+                <meta content="" property="og:description" />
+                <meta content="article" property="og:type" />
+                <meta
+                  content={`https://mykitchen.vercel.app/${router.asPath}`}
+                  property="og:url"
                 />
-              </div>
-              <div className="category">
-                <h4>
-                  <p>Category : </p>
-                  <span>{mealInfo[0].strCategory || "None"}</span>{" "}
-                  <button>
-                    <i className="bi bi-search"></i>
-                  </button>
-                </h4>
-                <h4>
-                  <p>Area : </p>
-                  <span>{mealInfo[0].strArea || "None"}</span>{" "}
-                  <button>
-                    <i className="bi bi-search"></i>
-                  </button>
-                </h4>
-                <h4>
-                  <p>Tags: </p>
-                  <span>
-                    {showAll
-                      ? mealInfo[0].strTags
-                        ? mealInfo[0].strTags
-                            .split(",")
-                            .map((tag, index) => <p key={index}>{tag}</p>)
-                        : "None"
-                      : mealInfo[0].strTags
-                      ? mealInfo[0].strTags.substr(0, 10) + ".."
-                      : "None"}
-                    <button
-                      style={{ color: "pink" }}
-                      onClick={() => setShowAll(!showAll)}
-                    >
-                      {showAll ? (
-                        <i className="bi bi-caret-down"></i>
-                      ) : (
-                        <i className="bi bi-caret-up"></i>
-                      )}
-                    </button>
-                  </span>
-                  <button>
-                    <i className="bi bi-search"></i>
-                  </button>
-                </h4>
-              </div>
-              <div className="instructions">
-                <h2>Cooking Instructions</h2>
-                <h5 className={instruction ? "justify" : "center"}>
-                  {instruction
-                    ? mealInfo[0].strInstructions
-                        .split(".")
-                        .map((ins, index) => (
-                          <p key={index}>
-                            {" "}
-                            <span>{index + 1}..</span>
-                            {ins}
-                          </p>
-                        ))
-                    : mealInfo[0].strInstructions}
-                </h5>
-                <div className="buttons_con">
-                  <h4>Show Instructions As</h4>
-                  <button onClick={() => setInstruction(true)}>
-                    <span>List </span>
-                    <i className="bi bi-list-ol"></i>
-                  </button>
-                  <button onClick={() => setInstruction(false)}>
-                    <span>Paragraph </span>
-                    <i className="bi bi-text-center"></i>
-                  </button>
+                <meta content="mykitchen.vercel.app" property="og:site_name" />
+                <title>{mealInfo[0].strMeal}</title>
+              </Header>
+              <Section className="container fetched">
+                <h1 className="heading">{mealInfo[0].strMeal}</h1>
+                <div className="image">
+                  <Image
+                    layout="fill"
+                    priority
+                    placeholder="blurDataURL"
+                    src={mealInfo[0].strMealThumb}
+                    alt={mealInfo[0].strMeal}
+                  />
                 </div>
-              </div>
-              <div className="ingredients">
-                <h2>Ingredients</h2>
-                <article className="table">
-                  <div className="column">
-                    <h4>Ingredient</h4>
-                    {getIngr("strIngredient").map((ing, index) => (
-                      <p key={index}>{ing}</p>
-                    ))}
+                <div className="category">
+                  <h4>
+                    <p>Category : </p>
+                    <span>{mealInfo[0].strCategory || "None"}</span>{" "}
+                    <button>
+                      <i className="bi bi-search"></i>
+                    </button>
+                  </h4>
+                  <h4>
+                    <p>Area : </p>
+                    <span>{mealInfo[0].strArea || "None"}</span>{" "}
+                    <button>
+                      <i className="bi bi-search"></i>
+                    </button>
+                  </h4>
+                  <h4>
+                    <p>Tags: </p>
+                    <span>
+                      {showAll
+                        ? mealInfo[0].strTags
+                          ? mealInfo[0].strTags
+                              .split(",")
+                              .map((tag, index) => <p key={index}>{tag}</p>)
+                          : "None"
+                        : mealInfo[0].strTags
+                        ? mealInfo[0].strTags.substr(0, 10) + ".."
+                        : "None"}
+                      <button
+                        style={{ color: "pink" }}
+                        onClick={() => setShowAll(!showAll)}
+                      >
+                        {showAll ? (
+                          <i className="bi bi-caret-down"></i>
+                        ) : (
+                          <i className="bi bi-caret-up"></i>
+                        )}
+                      </button>
+                    </span>
+                    <button>
+                      <i className="bi bi-search"></i>
+                    </button>
+                  </h4>
+                </div>
+                <div className="instructions">
+                  <h2>Cooking Instructions</h2>
+                  <h5 className={instruction ? "justify" : "center"}>
+                    {instruction
+                      ? mealInfo[0].strInstructions
+                          .split(".")
+                          .map((ins, index) => (
+                            <p key={index}>
+                              {" "}
+                              <span>{index + 1}..</span>
+                              {ins}
+                            </p>
+                          ))
+                      : mealInfo[0].strInstructions}
+                  </h5>
+                  <div className="buttons_con">
+                    <h4>Show Instructions As</h4>
+                    <button onClick={() => setInstruction(true)}>
+                      <span>List </span>
+                      <i className="bi bi-list-ol"></i>
+                    </button>
+                    <button onClick={() => setInstruction(false)}>
+                      <span>Paragraph </span>
+                      <i className="bi bi-text-center"></i>
+                    </button>
                   </div>
-                  <div className="column">
-                    <h4>Amount</h4>
-                    {getIngr("strMeasure").map((ing, index) => (
-                      <p key={index}>{ing}</p>
-                    ))}
-                  </div>
-                </article>
-              </div>
-              <div className="youtube">
-                <h2>Watch On Youtube</h2>
-                {mealInfo[0].strYoutube ? (
-                  <article>
-                    <figure className="youtube_con">
-                      <iframe
-                        src={`https://www.youtube.com/embed/${getId(
-                          mealInfo[0].strYoutube
-                        )}`}
-                        title="YouTube video player"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    </figure>
+                </div>
+                <div className="ingredients">
+                  <h2>Ingredients</h2>
+                  <article className="table">
+                    <div className="column">
+                      <h4>Ingredient</h4>
+                      {getIngr("strIngredient").map((ing, index) => (
+                        <p key={index}>{ing}</p>
+                      ))}
+                    </div>
+                    <div className="column">
+                      <h4>Amount</h4>
+                      {getIngr("strMeasure").map((ing, index) => (
+                        <p key={index}>{ing}</p>
+                      ))}
+                    </div>
                   </article>
-                ) : (
-                  <article>
-                    <div className="youtube_con noyoutube_con">
-                      <div className="notfound">
-                        <h1>Ooops!!!</h1>
-                        <h4>We Couldn&apos;t Find A Youtube Video</h4>
-                        <div className="image_con">
-                          <Image
-                            width="100px"
-                            height="100px"
-                            src="/errortv.png"
-                            alt="404 error icon"
-                          />
+                </div>
+                <div className="youtube">
+                  <h2>Watch On Youtube</h2>
+                  {mealInfo[0].strYoutube ? (
+                    <article>
+                      <figure className="youtube_con">
+                        <iframe
+                          src={`https://www.youtube.com/embed/${getId(
+                            mealInfo[0].strYoutube
+                          )}`}
+                          title="YouTube video player"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </figure>
+                    </article>
+                  ) : (
+                    <article>
+                      <div className="youtube_con noyoutube_con">
+                        <div className="notfound">
+                          <h1>Ooops!!!</h1>
+                          <h4>We Couldn&apos;t Find A Youtube Video</h4>
+                          <div className="image_con">
+                            <Image
+                              width="100px"
+                              height="100px"
+                              src="/errortv.png"
+                              alt="404 error icon"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <p>
-                      Youtube video is not availaible... pls Search on Google
-                    </p>
-                  </article>
-                )}
-              </div>
-              <div className="google">
-                <h2>Search On Google</h2>
-                <div>
-                  <Script
-                    async
-                    src="https://cse.google.com/cse.js?cx=dbabda20325129ce0"
-                  ></Script>
-                  <div
-                    id="google"
-                    enableAutoComplete="true"
-                    className="gcse-searchbox"
-                  ></div>
+                      <p>
+                        Youtube video is not availaible... pls Search on Google
+                      </p>
+                    </article>
+                  )}
                 </div>
-                <div className="google_results">
-                  <div className="gcse-searchresults"></div>
+                <div className="google">
+                  <h2>Search On Google</h2>
+                  <div className="google_search">
+                    <div className="gcse-searchbox"></div>
+                  </div>
+                  <div className="google_results">
+                    <div className="gcse-searchresults"></div>
+                  </div>
                 </div>
-              </div>
-              <div className="related"></div>
-              <section className="search results"></section>
-            </Section>
+                <div className="related"></div>
+                <section className="search results"></section>
+              </Section>
+            </>
           )}
         </Main>
       ) : (
@@ -289,6 +316,7 @@ const Section = styled.section`
     object-fit: center;
     margin: 0 auto;
     margin-top: 20px;
+    padding: 5px;
   }
   .category {
     margin-top: 20px;
@@ -411,7 +439,18 @@ const Section = styled.section`
   }
   .google {
     margin-top: 20px;
-    text-align: center;
+    h2 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .google_search {
+      width: 80%;
+      margin: 0 auto;
+      position: relative;
+    }
+    .google_results {
+      border: 2px solid pink !important;
+    }
   }
   @media screen and (min-width: 546px) {
     .category {
