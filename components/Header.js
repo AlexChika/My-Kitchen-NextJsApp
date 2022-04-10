@@ -20,6 +20,10 @@ const Header = ({ children }) => {
           href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Lobster&family=Roboto:ital,wght@1,300&display=swap"
           rel="stylesheet"
         />
+        <meta
+          name="google-site-verification"
+          content="Y7AhEXjqshRz7CKtM7SSoyyQz4-RxXwebjgPIhgKhVU"
+        />
         {children}
       </Head>
     </>
