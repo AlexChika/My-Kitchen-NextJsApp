@@ -1,15 +1,23 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { findMeal } from "../../../utils/fetchers";
+import {
+  findMeal,
+  findMealCategory,
+  findMealArea,
+} from "../../../utils/fetchers";
 import Image from "next/image";
 import styled from "styled-components";
-import { BallTriangle } from "react-loader-spinner";
+import { BallTriangle, ThreeDots } from "react-loader-spinner";
 import Header from "../../../components/Header";
 const Index = () => {
   const [load, setLoad] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [searchName, setSearchName] = useState("Category");
+  const [noRelated, setNoRelated] = useState(false);
   const [instruction, setInstruction] = useState(false);
   const [mealInfo, setMealInfo] = useState([{ strMeal: "I am Testing" }]);
+  const [mealsarr, setMealsarr] = useState([]);
+
   const [status, setStatus] = useState({
     isError: false,
     isLoading: false,
@@ -28,6 +36,28 @@ const Index = () => {
     return ingr;
   };
   const getId = (link) => link.split("=")[1];
+  const handleRelatedArea = async (area) => {
+    if (!area) return;
+    setSearchName("Area");
+    const { meals, isError } = await findMealArea(area);
+    if (isError || meals.meals === null) {
+      setNoRelated(true);
+    } else if (meals.meals) {
+      setNoRelated(false);
+      setMealsarr(meals.meals);
+    }
+  };
+  const handleRelatedCategory = async (category) => {
+    if (!category) return;
+    setSearchName("Category");
+    const { meals, isError } = await findMealCategory(category);
+    if (isError || meals.meals === null) {
+      setNoRelated(true);
+    } else if (meals.meals) {
+      setNoRelated(false);
+      setMealsarr(meals.meals);
+    }
+  };
   const router = useRouter();
   useEffect(() => {
     (function () {
@@ -62,6 +92,15 @@ const Index = () => {
       if (meal) {
         setMealInfo(meal.meals);
         setStatus({ isError: false, isLoading: false, isFetched: true });
+        const { meals, isError } = await findMealCategory(
+          meal.meals[0].strCategory
+        );
+        if (isError || meals.meals === null) {
+          setNoRelated(true);
+        } else if (meals.meals) {
+          setNoRelated(false);
+          setMealsarr(meals.meals);
+        }
         return;
       }
     }
@@ -132,49 +171,6 @@ const Index = () => {
                     src={mealInfo[0].strMealThumb}
                     alt={mealInfo[0].strMeal}
                   />
-                </div>
-                <div className="category">
-                  <h4>
-                    <p>Category : </p>
-                    <span>{mealInfo[0].strCategory || "None"}</span>{" "}
-                    <button>
-                      <i className="bi bi-search"></i>
-                    </button>
-                  </h4>
-                  <h4>
-                    <p>Area : </p>
-                    <span>{mealInfo[0].strArea || "None"}</span>{" "}
-                    <button>
-                      <i className="bi bi-search"></i>
-                    </button>
-                  </h4>
-                  <h4>
-                    <p>Tags: </p>
-                    <span>
-                      {showAll
-                        ? mealInfo[0].strTags
-                          ? mealInfo[0].strTags
-                              .split(",")
-                              .map((tag, index) => <p key={index}>{tag}</p>)
-                          : "None"
-                        : mealInfo[0].strTags
-                        ? mealInfo[0].strTags.substr(0, 10) + ".."
-                        : "None"}
-                      <button
-                        style={{ color: "pink" }}
-                        onClick={() => setShowAll(!showAll)}
-                      >
-                        {showAll ? (
-                          <i className="bi bi-caret-down"></i>
-                        ) : (
-                          <i className="bi bi-caret-up"></i>
-                        )}
-                      </button>
-                    </span>
-                    <button>
-                      <i className="bi bi-search"></i>
-                    </button>
-                  </h4>
                 </div>
                 <div className="instructions">
                   <h2>Cooking Instructions</h2>
@@ -267,7 +263,95 @@ const Index = () => {
                     <div className="gcse-searchresults"></div>
                   </div>
                 </div>
-                <div className="related"></div>
+                <div className="category">
+                  <h4>
+                    <p>Category : </p>
+                    <span>{mealInfo[0].strCategory || "None"}</span>{" "}
+                    <button
+                      onClick={() =>
+                        handleRelatedCategory(mealInfo[0].strCategory)
+                      }
+                    >
+                      <i className="bi bi-search"></i>
+                    </button>
+                  </h4>
+                  <h4>
+                    <p>Area : </p>
+                    <span>{mealInfo[0].strArea || "None"}</span>{" "}
+                    <button
+                      onClick={() => handleRelatedArea(mealInfo[0].strArea)}
+                    >
+                      <i className="bi bi-search"></i>
+                    </button>
+                  </h4>
+                  <h4>
+                    <p>Tags: </p>
+                    <span>
+                      {showAll
+                        ? mealInfo[0].strTags
+                          ? mealInfo[0].strTags
+                              .split(",")
+                              .map((tag, index) => <p key={index}>{tag}</p>)
+                          : "None"
+                        : mealInfo[0].strTags
+                        ? mealInfo[0].strTags.substr(0, 10) + ".."
+                        : "None"}
+                    </span>
+                    <button
+                      style={{ color: "pink" }}
+                      onClick={() => setShowAll(!showAll)}
+                    >
+                      {showAll ? (
+                        <i className="bi bi-caret-down"></i>
+                      ) : (
+                        <i className="bi bi-caret-up"></i>
+                      )}
+                    </button>
+                  </h4>
+                </div>
+                <div className="related">
+                  <h2>Related Searches</h2>
+                  <p>Based on {searchName}</p>
+                  <>
+                    {noRelated ? (
+                      <div>
+                        <h4>No Related Searches</h4>{" "}
+                        <p>Try Searching By Area Or Category</p>
+                      </div>
+                    ) : (
+                      <div>
+                        {mealsarr.length < 1 ? (
+                          <div className="loading">
+                            <ThreeDots color="#00BFFF" height={80} width={80} />
+                          </div>
+                        ) : (
+                          <div className="meal_grid_con">
+                            {mealsarr.map((meal) => (
+                              <a
+                                key={meal.idMeal}
+                                href={`/kitchendashboard/${
+                                  meal.strMeal + "=" + meal.idMeal
+                                }`}
+                              >
+                                <div className="meal_card">
+                                  <Image
+                                    layout="fill"
+                                    placeholder="blurDataURL"
+                                    src={meal.strMealThumb}
+                                    alt={meal.strMeal}
+                                  />
+                                  <div className="meal_title">
+                                    <h4>{meal.strMeal}</h4>
+                                  </div>
+                                </div>
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </>
+                </div>
                 <section className="search results"></section>
               </Section>
             </>
@@ -311,7 +395,6 @@ const Section = styled.section`
   }
   .image {
     height: 60vh;
-    max-width: 600px;
     position: relative;
     object-fit: center;
     margin: 0 auto;
@@ -452,6 +535,72 @@ const Section = styled.section`
       border: 2px solid pink !important;
     }
   }
+  .related {
+    margin-top: 20px;
+    text-align: center;
+    p {
+      margin-bottom: 10px;
+    }
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .meal_card {
+      border: 2px solid white;
+      position: relative;
+      min-height: 100%;
+      .meal_title {
+        height: 40px;
+        width: 100%;
+        position: absolute;
+        bottom: 0%;
+        transform: translateY(125%);
+        text-align: center;
+        color: white;
+      }
+    }
+    .meal_grid_con {
+      display: grid;
+      place-content: center;
+      grid-template-columns: repeat(auto-fill, 250px);
+      grid-auto-rows: 250px;
+      gap: 1em;
+      row-gap: 3em;
+    }
+  }
+  @media screen and (min-width: 340px) {
+    .related {
+      .meal_grid_con {
+        grid-template-columns: repeat(auto-fill, 150px);
+        grid-auto-rows: 150px;
+      }
+    }
+  }
+  @media screen and (min-width: 370px) {
+    .related {
+      .meal_grid_con {
+        grid-template-columns: repeat(auto-fill, 165px);
+        grid-auto-rows: 165px;
+      }
+    }
+  }
+  @media screen and (min-width: 400px) {
+    .related {
+      .meal_grid_con {
+        grid-template-columns: repeat(auto-fill, 180px);
+        grid-auto-rows: 180px;
+      }
+    }
+  }
+  @media screen and (min-width: 440px) {
+    .related {
+      .meal_grid_con {
+        grid-template-columns: repeat(auto-fill, 200px);
+        grid-auto-rows: 200px;
+      }
+    }
+  }
   @media screen and (min-width: 546px) {
     .category {
       display: flex;
@@ -459,11 +608,3 @@ const Section = styled.section`
     }
   }
 `;
-/*
-Filter by Category
-www.themealdb.com/api/json/v1/1/filter.php?c=Seafood
-Filter by Area
-www.themealdb.com/api/json/v1/1/filter.php?a=Canadian
-list all by area
-www.themealdb.com/api/json/v1/1/list.php?a=list
-*/

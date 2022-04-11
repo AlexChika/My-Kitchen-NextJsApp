@@ -36,6 +36,40 @@ export async function findMeal(id) {
     };
   }
 }
+export async function findMealCategory(category) {
+  try {
+    const data = await fetch(
+      `https://themealdb.com/api/json/v1/1/filter.php?c=${category}`
+    );
+    const meals = await data.json();
+    return {
+      meals,
+      isError: null,
+    };
+  } catch {
+    return {
+      meals: null,
+      isError: true,
+    };
+  }
+}
+export async function findMealArea(area) {
+  try {
+    const data = await fetch(
+      `https://themealdb.com/api/json/v1/1/filter.php?a=${area}`
+    );
+    const meals = await data.json();
+    return {
+      meals,
+      isError: null,
+    };
+  } catch {
+    return {
+      meals: null,
+      isError: true,
+    };
+  }
+}
 
 // .........
 // export function findMeals(food) {

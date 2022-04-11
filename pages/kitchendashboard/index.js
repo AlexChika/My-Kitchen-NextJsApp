@@ -89,10 +89,6 @@ export default function KitchenDashboard() {
   const handleRandom = () => {
     console.log("I was hit");
   };
-  const handleSingleMeal = (id) => {
-    console.log(id);
-    // router.push("/kitchendashboard/meal");
-  };
   return (
     <>
       <Header>
