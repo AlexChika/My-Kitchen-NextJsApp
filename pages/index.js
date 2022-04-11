@@ -312,9 +312,19 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
   const error = useRef(null);
   const handleSigninSubmit = (e) => {
     e.preventDefault();
+    localStorage.setItem(
+      "status",
+      JSON.stringify({ email: null, local: true })
+    );
+    Router.push("/kitchendashboard");
   };
   const handleSignupSubmit = (e) => {
     e.preventDefault();
+    localStorage.setItem(
+      "status",
+      JSON.stringify({ email: null, local: true })
+    );
+    Router.push("/kitchendashboard");
   };
   const continueWithoutLogin = (e) => {
     localStorage.setItem(
