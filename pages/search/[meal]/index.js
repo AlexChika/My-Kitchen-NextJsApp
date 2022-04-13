@@ -74,7 +74,7 @@ const Index = () => {
     const route = router && router.query["meal"];
     if (route) {
       if (!route.includes("=")) {
-        router.push("/kitchendashboard");
+        router.push("/search");
       } else {
         setLoad(true);
       }
@@ -154,6 +154,11 @@ const Index = () => {
                   property="og:url"
                 />
                 <meta content="mykitchen.vercel.app" property="og:site_name" />
+                <script
+                  async
+                  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5656452972473632"
+                  crossOrigin="anonymous"
+                ></script>
                 <title>{mealInfo[0].strMeal}</title>
               </Header>
               <Section className="container fetched">
