@@ -146,11 +146,6 @@ const Index = () => {
           {status.isFetched && (
             <>
               <Header>
-                <script
-                  async
-                  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5656452972473632"
-                  crossOrigin="anonymous"
-                ></script>
                 <meta content={mealInfo[0].strMeal} property="og:title" />
                 <meta content="" property="og:description" />
                 <meta content="article" property="og:type" />
@@ -329,7 +324,7 @@ const Index = () => {
                             {mealsarr.map((meal) => (
                               <a
                                 key={meal.idMeal}
-                                href={`/kitchendashboard/${
+                                href={`/search/${
                                   meal.strMeal + "=" + meal.idMeal
                                 }`}
                               >

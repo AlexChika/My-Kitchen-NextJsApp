@@ -17,13 +17,25 @@ export const GlobalStyles = createGlobalStyle`
   word-wrap:break-word;
   font-family: 'Roboto', sans-serif;
 }
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-track {
+  background-color: rgb(26, 26, 39);
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(26, 26, 39);
+  border-radius: 0px;
+}
 /* Change the white to any color */
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active{
-  box-shadow: 0 0 0 30px rgb(26, 26, 39) inset !important;
-    -webkit-box-shadow: 0 0 0 30px rgb(26, 26, 39) inset !important;
+  box-shadow: 0 0 0 30px rgba(26, 26, 39,0.9) inset !important;
+    -webkit-box-shadow: 0 0 0 30px rgba(26, 26, 39,0.9) inset !important;
 }
 html{
       -ms-text-size-adjust: 100%;

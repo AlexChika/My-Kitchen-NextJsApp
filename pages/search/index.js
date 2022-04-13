@@ -6,6 +6,7 @@ import { findMeals } from "../../utils/fetchers";
 import Modal from "../../components/Modal";
 import { RotatingLines } from "react-loader-spinner";
 import Header from "../../components/Header";
+import Navigation from "../../components/Navigation";
 export default function KitchenDashboard() {
   const [searchword, setSearchword] = useState("");
   const [load, setLoad] = useState(false);
@@ -96,7 +97,10 @@ export default function KitchenDashboard() {
           name="description"
           content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
         />
-        <meta content="My Kitchen | Search For Meals" property="og:title" />
+        <meta
+          content="My Kitchen | Search For Meals| Search For Recipees|"
+          property="og:title"
+        />
         <meta
           content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
           property="og:description"
@@ -107,7 +111,7 @@ export default function KitchenDashboard() {
           property="og:url"
         />
         <meta content="mykitchen.vercel.app" property="og:site_name" />
-        <title>My Kitchen | Search For Meals</title>
+        <title>My Kitchen | Search For Meals | Search For Recipees|</title>
       </Header>
       {load ? (
         <Main>
@@ -190,9 +194,7 @@ export default function KitchenDashboard() {
                   {mealsarr.map((meal) => (
                     <a
                       key={meal.idMeal}
-                      href={`/kitchendashboard/${
-                        meal.strMeal + "=" + meal.idMeal
-                      }`}
+                      href={`/search/${meal.strMeal + "=" + meal.idMeal}`}
                     >
                       <div className="meal_card">
                         <Image
@@ -205,12 +207,14 @@ export default function KitchenDashboard() {
                           <h4>{meal.strMeal}</h4>
                         </div>
                       </div>
+                      {/* <button></button> */}
                     </a>
                   ))}
                 </div>
               </div>
             )}
           </section>
+          <Navigation />
         </Main>
       ) : (
         ""
@@ -221,7 +225,7 @@ export default function KitchenDashboard() {
 const Main = styled.main`
   padding: 20px 10px 10px 10px;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   .input_bar {
     margin: 0 auto;
     min-width: 260px;
@@ -265,10 +269,19 @@ const Main = styled.main`
   /* ............end of form / input_bar styles........... */
   .body_section {
     margin: 0 auto;
-    margin-top: 30px;
-    min-height: 80vh;
+    margin-top: 10px;
+    height: calc(80vh - 23px);
     max-width: 768px;
-    /* border: 2px solid red; */
+    overflow-x: auto;
+  }
+  .brand_name:hover,
+  brand_name:focus {
+    border: 2px solid white;
+    h1,
+    i {
+      color: pink;
+      text-shadow: 2px 2px 15px black, 5px 5px 0px white;
+    }
   }
   .containers {
     min-height: 80vh;

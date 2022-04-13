@@ -41,7 +41,9 @@ export default function Landing() {
               content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
             />
             <meta
-              content="My Kitchen | Your Only Step To Becoming A Chef"
+              content=" My Kitchen | Your Only Step To Becoming A Chef| Search Food
+              Recipes, Watch Video Tutorials, Browse All Kinds of Meals, See
+              Cooking Instruction , Save Favourites And make Meal Timetables/ Calender and many more"
               property="og:title"
             />
             <meta
@@ -51,7 +53,17 @@ export default function Landing() {
             <meta content="article" property="og:type" />
             <meta content={`https://mykitchen.vercel.app/`} property="og:url" />
             <meta content="mykitchen.vercel.app" property="og:site_name" />
-            <title>My Kitchen | Your Only Step To Becoming A Chef</title>
+            <script
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5656452972473632"
+              crossorigin="anonymous"
+            ></script>
+            <title>
+              My Kitchen | Your Only Step To Becoming A Chef| Search Food
+              Recipes, Watch Video Tutorials, Browse All Kinds of Meals, See
+              Cooking Instruction , Save Favourites And make Meal Timetables/
+              Calender and many more
+            </title>
           </Header>
           <div className="arrow_btn_con">
             <button onClick={handleNextPage} className="next">
@@ -316,7 +328,7 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
       "status",
       JSON.stringify({ email: null, local: true })
     );
-    Router.push("/kitchendashboard");
+    Router.push("/search");
   };
   const handleSignupSubmit = (e) => {
     e.preventDefault();
@@ -324,14 +336,14 @@ const ThirdPage = ({ pageCount, deviceWidth }) => {
       "status",
       JSON.stringify({ email: null, local: true })
     );
-    Router.push("/kitchendashboard");
+    Router.push("/search");
   };
   const continueWithoutLogin = (e) => {
     localStorage.setItem(
       "status",
       JSON.stringify({ email: null, local: true })
     );
-    Router.push("/kitchendashboard");
+    Router.push("/search");
   };
   return (
     <ThirdPageLayout login={login} page={pageCount} bg={deviceWidth}>
@@ -507,7 +519,7 @@ const LandingPageLayout = styled.div`
     z-index: 4;
     display: flex;
     justify-content: center;
-    top: 85%;
+    top: 83%;
     left: 50%;
     transform: translateX(-50%);
     span {
@@ -568,10 +580,10 @@ const FirstPageLayout = styled.main`
   transition: all 0.3s linear;
   margin: 0 auto;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   background-image: ${(props) =>
     props.bg > 546 ? "url(/bgdesktop.jpg)" : "url(/bgmobile.jpg)"};
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.6)),
     ${(props) =>
       props.bg > 546 ? "url(/bgdesktop.jpg)" : "url(/bgmobile.jpg)"};
   background-repeat: no-repeat;
@@ -631,7 +643,7 @@ const FirstPageLayout = styled.main`
   .brand_name:hover,
   brand_name:focus {
     border: 2px solid white;
-    h1,
+    h2,
     i {
       color: pink;
       text-shadow: 2px 2px 15px black, 5px 5px 0px white;
@@ -768,7 +780,7 @@ const SecondPageLayout = styled.main`
   .sec_page_con {
     padding: 20px 0;
     z-index: 2;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.7);
     width: 100%;
     min-height: 100vh;
     position: absolute;
@@ -797,7 +809,7 @@ const SecondPageLayout = styled.main`
   .brand_name:hover,
   brand_name:focus {
     border: 2px solid white;
-    h1,
+    h2,
     i {
       color: pink;
       text-shadow: 2px 2px 15px black, 5px 5px 0px white;
@@ -989,7 +1001,7 @@ const SecondPageLayout = styled.main`
 const ThirdPageLayout = styled.main`
   animation: opacity 1s linear;
   transition: all 0.3s linear;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.7);
   color: white;
   .login_signup_sec {
     padding-top: 20px;
@@ -999,9 +1011,9 @@ const ThirdPageLayout = styled.main`
     background-repeat: no-repeat;
     min-height: 100vh;
     background-image: url(/loginbg.jpg);
-    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)),
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
       url(/loginbg.jpg);
-    border: 7px dashed white;
+    border: 2px dashed white;
   }
   /* .....end of signUp......section.. */
   .brand_name {
@@ -1027,7 +1039,7 @@ const ThirdPageLayout = styled.main`
   .brand_name:hover,
   brand_name:focus {
     border: 2px solid white;
-    h1,
+    h2,
     i {
       color: pink;
       text-shadow: 2px 2px 15px black, 5px 5px 0px white;
