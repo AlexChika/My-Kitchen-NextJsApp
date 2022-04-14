@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   findMeal,
   findMealCategory,
@@ -9,6 +10,7 @@ import Image from "next/image";
 import styled from "styled-components";
 import { BallTriangle, ThreeDots } from "react-loader-spinner";
 import Header from "../../../components/Header";
+import Navigation from "../../../components/Navigation";
 const Index = () => {
   const [load, setLoad] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -17,12 +19,28 @@ const Index = () => {
   const [instruction, setInstruction] = useState(false);
   const [mealInfo, setMealInfo] = useState([{ strMeal: "I am Testing" }]);
   const [mealsarr, setMealsarr] = useState([]);
-
   const [status, setStatus] = useState({
     isError: false,
     isLoading: false,
     isFetched: false,
   });
+  const router = useRouter();
+  // check to see if slug contains an id the redoirect to search page if not
+  useEffect(() => {
+    const route = router && router.query["meal"];
+    if (route) {
+      if (!route.includes("=")) {
+        router.push("/search");
+      } else {
+        setLoad(true);
+      }
+    }
+  }, [router]);
+  // function handling the card btns show and hide
+  const handleShowList = (e) => {
+    e.currentTarget.nextElementSibling.classList.toggle("show");
+  };
+  //  looping to pish ingredients into an array
   const getIngr = (ing) => {
     let ingr = [];
     let meal = mealInfo[0];
@@ -35,7 +53,9 @@ const Index = () => {
     }
     return ingr;
   };
+  // getting the id from a youtube url
   const getId = (link) => link.split("=")[1];
+  // query for related search via area
   const handleRelatedArea = async (area) => {
     if (!area) return;
     setSearchName("Area");
@@ -47,6 +67,7 @@ const Index = () => {
       setMealsarr(meals.meals);
     }
   };
+  // query for related search via category
   const handleRelatedCategory = async (category) => {
     if (!category) return;
     setSearchName("Category");
@@ -58,7 +79,7 @@ const Index = () => {
       setMealsarr(meals.meals);
     }
   };
-  const router = useRouter();
+  // adding google search scripts
   useEffect(() => {
     (function () {
       var cx = "4a5e535d2c0acf575";
@@ -70,16 +91,7 @@ const Index = () => {
       s.parentNode.insertBefore(gcse, s);
     })();
   }, []);
-  useEffect(() => {
-    const route = router && router.query["meal"];
-    if (route) {
-      if (!route.includes("=")) {
-        router.push("/search");
-      } else {
-        setLoad(true);
-      }
-    }
-  }, [router]);
+  // main function, getting specific meal
   const getMeal = async () => {
     const id = router?.query?.meal?.split("=")[1];
     if (id) {
@@ -119,6 +131,11 @@ const Index = () => {
       </Header>
       {load ? (
         <Main>
+          <Link href="/search">
+            <button className="back_btn">
+              Back <i className="bi bi-arrow-left-circle-fill"></i>
+            </button>
+          </Link>
           {status.isError && (
             <div className="containers error">
               <Image
@@ -327,24 +344,38 @@ const Index = () => {
                         ) : (
                           <div className="meal_grid_con">
                             {mealsarr.map((meal) => (
-                              <a
-                                key={meal.idMeal}
-                                href={`/search/${
-                                  meal.strMeal + "=" + meal.idMeal
-                                }`}
-                              >
-                                <div className="meal_card">
-                                  <Image
-                                    layout="fill"
-                                    placeholder="blurDataURL"
-                                    src={meal.strMealThumb}
-                                    alt={meal.strMeal}
-                                  />
-                                  <div className="meal_title">
-                                    <h4>{meal.strMeal}</h4>
+                              <div className="meal_con" key={meal.idMeal}>
+                                <div className="tasks flex_center">
+                                  <button
+                                    onClick={handleShowList}
+                                    className="tasks_btn"
+                                  >
+                                    <i className="bi bi-three-dots"></i>
+                                  </button>
+                                  <div className={`tasks_list`}>
+                                    <button>Add To Favourites</button>
+                                    <button>Add To Calender</button>
+                                    <button>Add To Timetable</button>
                                   </div>
                                 </div>
-                              </a>
+                                <a
+                                  href={`/search/${
+                                    meal.strMeal + "=" + meal.idMeal
+                                  }`}
+                                >
+                                  <div className="meal_card">
+                                    <Image
+                                      layout="fill"
+                                      placeholder="blurDataURL"
+                                      src={meal.strMealThumb}
+                                      alt={meal.strMeal}
+                                    />
+                                    <div className="meal_title">
+                                      <h4>{meal.strMeal}</h4>
+                                    </div>
+                                  </div>
+                                </a>
+                              </div>
                             ))}
                           </div>
                         )}
@@ -352,8 +383,8 @@ const Index = () => {
                     )}
                   </>
                 </div>
-                <section className="search results"></section>
               </Section>
+              <Navigation />
             </>
           )}
         </Main>
@@ -367,6 +398,7 @@ const Index = () => {
 export default Index;
 const Main = styled.main`
   color: white;
+  position: relative;
   button {
     background: none;
     outline: none;
@@ -380,11 +412,26 @@ const Main = styled.main`
     justify-content: center;
     align-items: center;
   }
+  .back_btn {
+    color: pink;
+    position: fixed;
+    align-items: center;
+    background: linear-gradient(to left, grey, rgba(26, 26, 39) 75%);
+    padding: 3px;
+    top: 5px;
+    right: 5px;
+    z-index: 100;
+    display: flex;
+    i {
+      font-size: 20px;
+    }
+  }
 `;
 const Section = styled.section`
   padding: 30px 5px;
   max-width: 768px;
   margin: 0 auto;
+  margin-bottom: 45px;
   .heading {
     text-align: center;
     padding-bottom: 10px;
@@ -422,9 +469,6 @@ const Section = styled.section`
       width: max-content;
     }
     button {
-      background: none;
-      border: none;
-      outline: none;
       color: pink;
     }
   }
@@ -546,20 +590,7 @@ const Section = styled.section`
       justify-content: center;
       align-items: center;
     }
-    .meal_card {
-      border: 2px solid white;
-      position: relative;
-      min-height: 100%;
-      .meal_title {
-        height: 40px;
-        width: 100%;
-        position: absolute;
-        bottom: 0%;
-        transform: translateY(125%);
-        text-align: center;
-        color: white;
-      }
-    }
+    /*  */
     .meal_grid_con {
       display: grid;
       place-content: center;
@@ -567,6 +598,67 @@ const Section = styled.section`
       grid-auto-rows: 250px;
       gap: 1em;
       row-gap: 3em;
+    }
+    .meal_con {
+      position: relative;
+    }
+    .meal_card {
+      border: 2px solid white;
+      position: relative;
+      min-height: 100%;
+    }
+    .meal_title {
+      height: 40px;
+      width: 100%;
+      position: absolute;
+      bottom: 0%;
+      transform: translateY(125%);
+      text-align: center;
+      color: white;
+      z-index: 90;
+    }
+    .tasks {
+      position: absolute;
+      z-index: 90;
+      top: 0;
+      right: 0px;
+      width: 50px;
+      flex-direction: column;
+      .tasks_btn {
+        width: 100%;
+        height: 100%;
+        i {
+          font-size: 30px;
+          color: white;
+          text-shadow: 1px 1px 3px black;
+        }
+      }
+      .tasks_list {
+        border: 2px solid red;
+        position: relative;
+        width: 210%;
+        left: -105%;
+        padding: 10px 0px;
+        transition: all 0.3s linear;
+        height: 0;
+        overflow: hidden;
+        visibility: collapse;
+        button {
+          font-size: 11px;
+          width: 100%;
+          height: 2em;
+          color: white;
+          margin-bottom: 10px;
+          background: pink;
+          padding: 5px 0px;
+          border-radius: 15px;
+          box-shadow: 2px 2px 3px grey;
+        }
+      }
+      .tasks_list.show {
+        height: 130px;
+        visibility: visible;
+      }
     }
   }
   @media screen and (min-width: 340px) {

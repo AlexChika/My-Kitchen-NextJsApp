@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Router from "next/router";
 import styled from "styled-components";
@@ -7,7 +7,7 @@ import Modal from "../../components/Modal";
 import { RotatingLines } from "react-loader-spinner";
 import Header from "../../components/Header";
 import Navigation from "../../components/Navigation";
-export default function KitchenDashboard() {
+export default function Search() {
   const [searchword, setSearchword] = useState("");
   const [load, setLoad] = useState(false);
   const [modal, setModal] = useState(false);
@@ -19,6 +19,7 @@ export default function KitchenDashboard() {
     isFetched: false,
     notFound: false,
   });
+  // const mealGridCon = useRef(null);
   useEffect(() => {
     if (!localStorage.getItem("status")) {
       Router.push("/");
@@ -29,6 +30,9 @@ export default function KitchenDashboard() {
       }, 120000);
     }
   }, []);
+  const handleShowList = (e) => {
+    e.currentTarget.nextElementSibling.classList.toggle("show");
+  };
   // const [accent, setAccent] = useState({
   //   color1: "tomato",
   //   color2: "rgb(17, 227, 241)",
@@ -192,29 +196,37 @@ export default function KitchenDashboard() {
                 <h2>Search Results For {searchword.toUpperCase()}</h2>
                 <div className="meal_grid_con">
                   {mealsarr.map((meal) => (
-                    <a
-                      key={meal.idMeal}
-                      href={`/search/${meal.strMeal + "=" + meal.idMeal}`}
-                    >
-                      <div className="meal_card">
-                        <Image
-                          layout="fill"
-                          placeholder="blurDataURL"
-                          src={meal.strMealThumb}
-                          alt={meal.strMeal}
-                        />
-                        <div className="meal_title">
-                          <h4>{meal.strMeal}</h4>
+                    <div className="meal_con" key={meal.idMeal}>
+                      <div className="tasks flex_center">
+                        <button onClick={handleShowList} className="tasks_btn">
+                          <i className="bi bi-three-dots"></i>
+                        </button>
+                        <div className={`tasks_list`}>
+                          <button>Add To Favourites</button>
+                          <button>Add To Calender</button>
+                          <button>Add To Timetable</button>
                         </div>
                       </div>
-                      {/* <button></button> */}
-                    </a>
+                      <a href={`/search/${meal.strMeal + "=" + meal.idMeal}`}>
+                        <div className="meal_card">
+                          <Image
+                            layout="fill"
+                            placeholder="blurDataURL"
+                            src={meal.strMealThumb}
+                            alt={meal.strMeal}
+                          />
+                          <div className="meal_title">
+                            <h4>{meal.strMeal}</h4>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
                   ))}
                 </div>
               </div>
             )}
           </section>
-          <Navigation />
+          <Navigation current={"search"} />
         </Main>
       ) : (
         ""
@@ -223,10 +235,22 @@ export default function KitchenDashboard() {
   );
 }
 const Main = styled.main`
-  padding: 20px 10px 10px 10px;
+  padding: 2.5% 2.5% 0px 2.5%;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  .flex_center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  button,
+  input {
+    border: none;
+    outline: none;
+    background: transparent;
+  }
   .input_bar {
+    height: calc(8vh-6px);
     margin: 0 auto;
     min-width: 260px;
     max-width: 425px;
@@ -234,9 +258,6 @@ const Main = styled.main`
     input,
     button {
       padding: 6px 0;
-      border: none;
-      outline: none;
-      background: transparent;
       color: white;
       font-size: 16px;
     }
@@ -269,19 +290,11 @@ const Main = styled.main`
   /* ............end of form / input_bar styles........... */
   .body_section {
     margin: 0 auto;
-    margin-top: 10px;
-    height: calc(80vh - 23px);
+    margin-top: 2.5%;
+    min-height: 80vh;
     max-width: 768px;
     overflow-x: auto;
-  }
-  .brand_name:hover,
-  brand_name:focus {
-    border: 2px solid white;
-    h1,
-    i {
-      color: pink;
-      text-shadow: 2px 2px 15px black, 5px 5px 0px white;
-    }
+    margin-bottom: 45px;
   }
   .containers {
     min-height: 80vh;
@@ -293,21 +306,6 @@ const Main = styled.main`
       font-family: "Lobster", cursive;
       margin-bottom: 15px;
     }
-
-    .meal_card {
-      border: 2px solid white;
-      position: relative;
-      min-height: 100%;
-      .meal_title {
-        height: 40px;
-        width: 100%;
-        position: absolute;
-        bottom: 0%;
-        transform: translateY(125%);
-        text-align: center;
-        color: white;
-      }
-    }
     .meal_grid_con {
       display: grid;
       place-content: center;
@@ -315,6 +313,67 @@ const Main = styled.main`
       grid-auto-rows: 250px;
       gap: 1em;
       row-gap: 3em;
+    }
+    .meal_con {
+      position: relative;
+    }
+    .meal_card {
+      border: 2px solid white;
+      position: relative;
+      min-height: 100%;
+    }
+    .meal_title {
+      height: 40px;
+      width: 100%;
+      position: absolute;
+      bottom: 0%;
+      transform: translateY(125%);
+      text-align: center;
+      color: white;
+      z-index: 90;
+    }
+
+    .tasks {
+      position: absolute;
+      z-index: 90;
+      top: 0;
+      right: 0px;
+      width: 50px;
+      flex-direction: column;
+      .tasks_btn {
+        width: 100%;
+        height: 100%;
+        i {
+          font-size: 30px;
+          color: white;
+          text-shadow: 1px 1px 3px black;
+        }
+      }
+      .tasks_list {
+        position: relative;
+        width: 200%;
+        left: -50%;
+        padding: 10px 0px;
+        transition: all 0.3s linear;
+        height: 0;
+        overflow: hidden;
+        visibility: collapse;
+        button {
+          font-size: 11px;
+          width: 100%;
+          height: 2em;
+          color: white;
+          margin-bottom: 10px;
+          background: pink;
+          padding: 5px 0px;
+          border-radius: 15px;
+          box-shadow: 2px 2px 3px grey;
+        }
+      }
+      .tasks_list.show {
+        height: 130px;
+        visibility: visible;
+      }
     }
   }
   /* ..........end of containers.fetched styling.......... */
@@ -378,7 +437,6 @@ const Main = styled.main`
       }
     }
   }
-  background: rgb(26, 26, 39);
   color: white;
 `;
 

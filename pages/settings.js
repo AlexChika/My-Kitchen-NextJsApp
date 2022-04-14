@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Header from "../components/Header";
+import Navigation from "../components/Navigation";
 import { useState, useReducer, useEffect } from "react";
 import Router from "next/router";
 const reducer = (state, action) => {
@@ -190,6 +191,7 @@ export default function Settings() {
             <input className="bg" type="submit" value="Customise" />
           </div>
         </form>
+        <Navigation current={"settings"} />
       </SettingCon>
     </>
   );
