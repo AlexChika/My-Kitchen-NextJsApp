@@ -46,8 +46,8 @@ export default function Navigation({ current }) {
 }
 
 const Nav = styled.nav`
-  height: calc(8vh- 10px);
-  padding: 5px 10px;
+  height: calc(8vh);
+  padding: 10px;
   position: fixed;
   bottom: 0px;
   left: 50%;

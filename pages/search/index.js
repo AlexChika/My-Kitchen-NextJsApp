@@ -114,7 +114,6 @@ export default function Search() {
           content={`https://mykitchen.vercel.app/kitchendashboard`}
           property="og:url"
         />
-        <meta content="mykitchen.vercel.app" property="og:site_name" />
         <title>My Kitchen | Search For Meals | Search For Recipees|</title>
       </Header>
       {load ? (

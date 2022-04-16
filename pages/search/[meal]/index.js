@@ -11,14 +11,27 @@ import styled from "styled-components";
 import { BallTriangle, ThreeDots } from "react-loader-spinner";
 import Header from "../../../components/Header";
 import Navigation from "../../../components/Navigation";
+import Modal from "../../../components/Modal";
 const Index = () => {
+  // state for redirecting to home
   const [load, setLoad] = useState(false);
+  // state for handling tags
   const [showAll, setShowAll] = useState(false);
+  // state for handling Modal pop ups
+  const [modal, setModal] = useState(false);
+  // state for related search name
   const [searchName, setSearchName] = useState("Category");
+  // state for handling related searches
   const [noRelated, setNoRelated] = useState(false);
+  // state for handling instructions formatting
   const [instruction, setInstruction] = useState(false);
+  // state for setting meal info from the single meal query by id
   const [mealInfo, setMealInfo] = useState([{ strMeal: "I am Testing" }]);
+  // state for setting meals array from query of multiple meal
   const [mealsarr, setMealsarr] = useState([]);
+  // state for setting selected ingredients to Modal
+  const [selectedIngredient, setSelectedIngredient] = useState("");
+  // state for conditional display
   const [status, setStatus] = useState({
     isError: false,
     isLoading: false,
@@ -39,6 +52,29 @@ const Index = () => {
   // function handling the card btns show and hide
   const handleShowList = (e) => {
     e.currentTarget.nextElementSibling.classList.toggle("show");
+  };
+  // function handling modal openning for add to shopping List
+  const handleShopingList = (ing) => {
+    setModal(true);
+    setSelectedIngredient(ing);
+  };
+  // function handling Add to shopping list
+  const addToShopping = (e) => {
+    e.preventDefault();
+    if (selectedIngredient.trim() === "") {
+      setModal(false);
+      return;
+    }
+    if (selectedIngredient.trim()) {
+      const lists = JSON.parse(localStorage.getItem("lists")) || [];
+      lists.push({
+        item: selectedIngredient,
+        id: new Date().getTime().toString(),
+        done: false,
+      });
+      localStorage.setItem("lists", JSON.stringify(lists));
+      setModal(false);
+    }
   };
   //  looping to pish ingredients into an array
   const getIngr = (ing) => {
@@ -170,7 +206,6 @@ const Index = () => {
                   content={`https://mykitchen.vercel.app/${router.asPath}`}
                   property="og:url"
                 />
-                <meta content="mykitchen.vercel.app" property="og:site_name" />
                 <script
                   async
                   src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5656452972473632"
@@ -179,7 +214,33 @@ const Index = () => {
                 <title>{mealInfo[0].strMeal}</title>
               </Header>
               <Section className="container fetched">
-                <h1 className="heading">{mealInfo[0].strMeal}</h1>
+                <Modal modal={modal} setModal={setModal}>
+                  <div className="modal">
+                    <h4>
+                      <i className="bi bi-pencil-square"></i> Add To Shopping
+                      List
+                    </h4>
+                    <form onSubmit={addToShopping}>
+                      <input
+                        type="text"
+                        value={selectedIngredient}
+                        onChange={(e) => setSelectedIngredient(e.target.value)}
+                      />
+                      <div className="modal_submit_con">
+                        <p>Looks Good?</p>
+                        <button type="submit">
+                          <i className="bi bi-check-square"></i>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </Modal>
+                <h1 className="heading">
+                  {mealInfo[0].strMeal}{" "}
+                  <button>
+                    <i className="bi bi-heart-fill"></i>
+                  </button>
+                </h1>
                 <div className="image">
                   <Image
                     layout="fill"
@@ -222,13 +283,20 @@ const Index = () => {
                     <div className="column">
                       <h4>Ingredient</h4>
                       {getIngr("strIngredient").map((ing, index) => (
-                        <p key={index}>{ing}</p>
+                        <div key={index} className="items">
+                          <p>{ing}</p>
+                          <button onClick={() => handleShopingList(ing)}>
+                            <i className="bi bi-bag-plus-fill"></i>
+                          </button>
+                        </div>
                       ))}
                     </div>
                     <div className="column">
                       <h4>Amount</h4>
                       {getIngr("strMeasure").map((ing, index) => (
-                        <p key={index}>{ing}</p>
+                        <div key={index} className="items">
+                          <p>{ing}</p>
+                        </div>
                       ))}
                     </div>
                   </article>
@@ -403,6 +471,7 @@ const Main = styled.main`
     background: none;
     outline: none;
     border: none;
+    cursor: pointer;
   }
   .containers.error,
   .containers.loading {
@@ -439,6 +508,13 @@ const Section = styled.section`
     max-width: 280px;
     margin: 0 auto;
     border-bottom: 2px dashed pink;
+    i {
+      font-size: 25px;
+    }
+    /* make color for items in favourites */
+    button:focus {
+      color: pink;
+    }
   }
   .image {
     height: 60vh;
@@ -530,6 +606,19 @@ const Section = styled.section`
       .column :last-of-type {
         border-left: 1px solid white;
       }
+      .items {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3px;
+        height: 35px;
+        border-bottom: 1px solid grey;
+        button {
+          color: pink;
+          margin-right: 5px;
+          font-size: 20px;
+        }
+      }
     }
   }
   .youtube {
@@ -615,11 +704,11 @@ const Section = styled.section`
       transform: translateY(125%);
       text-align: center;
       color: white;
-      z-index: 90;
+      z-index: 9;
     }
     .tasks {
       position: absolute;
-      z-index: 90;
+      z-index: 9;
       top: 0;
       right: 0px;
       width: 50px;
@@ -634,7 +723,6 @@ const Section = styled.section`
         }
       }
       .tasks_list {
-        border: 2px solid red;
         position: relative;
         width: 210%;
         left: -105%;
@@ -658,6 +746,38 @@ const Section = styled.section`
       .tasks_list.show {
         height: 130px;
         visibility: visible;
+      }
+    }
+  }
+  .modal {
+    h4 {
+      margin-top: 10px;
+      text-align: center;
+    }
+    input {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      border: 2px solid white;
+      outline: none;
+      background: none;
+      color: white;
+      border-radius: 10px;
+    }
+    .modal_submit_con {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      button,
+      p {
+        margin: 0px 5px;
+      }
+      button {
+        color: pink;
+        font-size: 20px;
+      }
+      button:focus {
+        color: greenyellow;
       }
     }
   }

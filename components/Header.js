@@ -5,6 +5,10 @@ const Header = ({ children }) => {
       <Head>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:locale" content="en_NG" />
+        <meta content="mykitchen" property="og:site_name" />
+        <meta content="products" property="og:type" />
         <link rel="icon" type="image/jpg" href="/ball-2.jpg" />
         <link
           rel="stylesheet"

@@ -32,7 +32,6 @@ export default function Landing() {
   };
   return (
     <>
-      {" "}
       {load ? (
         <LandingPageLayout page={pageCount}>
           <Header>
@@ -50,9 +49,7 @@ export default function Landing() {
               content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
               property="og:description"
             />
-            <meta content="article" property="og:type" />
             <meta content={`https://mykitchen.vercel.app/`} property="og:url" />
-            <meta content="mykitchen.vercel.app" property="og:site_name" />
             <script
               async
               src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5656452972473632"

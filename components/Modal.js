@@ -26,7 +26,6 @@ const ModalWrap = styled.div`
   height: 100%;
   z-index: 10;
   display: ${({ modal }) => (modal ? "block" : "none")};
-  /*  */
   .modal-body {
     border: 2px solid pink;
     width: 88%;
