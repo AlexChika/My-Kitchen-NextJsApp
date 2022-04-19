@@ -18,7 +18,6 @@ export const reducer = (state, action) => {
     return { ...state, lists };
   }
   if (action.type === "VALID_INPUT") {
-    console.log(action.payload);
     const lists = [...state.lists, action.payload];
     localStorage.setItem("lists", JSON.stringify(lists));
     return { ...state, lists };

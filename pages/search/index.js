@@ -293,7 +293,7 @@ const Main = styled.main`
     min-height: 80vh;
     max-width: 768px;
     overflow-x: auto;
-    margin-bottom: 45px;
+    margin-bottom: 50px;
   }
   .containers {
     min-height: 80vh;

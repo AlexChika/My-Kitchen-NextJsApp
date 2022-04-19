@@ -81,7 +81,7 @@ const Index = () => {
     let ingr = [];
     let meal = mealInfo[0];
     for (let i = 1; i <= 20; i++) {
-      if (meal[ing + i]) {
+      if (meal[ing + i].trim().length > 0) {
         ingr.push(meal[ing + i]);
       } else {
         break;
@@ -138,6 +138,7 @@ const Index = () => {
         return;
       }
       if (meal) {
+        console.log(meal);
         setMealInfo(meal.meals);
         setStatus({ isError: false, isLoading: false, isFetched: true });
         const { meals, isError } = await findMealCategory(
@@ -500,7 +501,7 @@ const Section = styled.section`
   padding: 30px 5px;
   max-width: 768px;
   margin: 0 auto;
-  margin-bottom: 45px;
+  margin-bottom: 50px;
   .heading {
     text-align: center;
     padding-bottom: 10px;
