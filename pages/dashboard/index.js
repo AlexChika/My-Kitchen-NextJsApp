@@ -22,6 +22,8 @@ export default function Dashboard() {
   const [openShop, setOpenShop] = useState(false);
   // ..................... States For Meal Of The Day......................
   const mealCon = useRef(null);
+  // ..................... States For timetable......................
+  const [value, setValue] = useState("hello people");
   // ........functions for shopping list category............
   function alerts(text, color) {
     alerter.current.classList.add(color);
@@ -104,6 +106,8 @@ export default function Dashboard() {
     const el = document.querySelector(`[data-id = ${dataid}]`);
     el.remove();
   };
+  // ................. functions for timetable...............
+
   return (
     <DashboardWrap>
       <header>
@@ -319,10 +323,65 @@ export default function Dashboard() {
           </div>
         </article>
         <article className="timetables mt-30">
-          <h2 className="mb-10">My Time-Tables</h2>
-          <figure>
-            <p>Hello Dear</p>
-          </figure>
+          <h2 className="mb-10">My Weekly Meals</h2>
+          <div className="table_con">
+            <form>
+              <Figure>
+                <div className="one">
+                  <p>BreakFast</p>
+                  <span>Monday</span>
+                  <div
+                    onInput={(e) => setValue(e.target.innerText)}
+                    className="inputs"
+                    contentEditable="true"
+                  >
+                    {value}
+                  </div>
+                </div>
+                <div className="two">
+                  <p>Lunch</p>
+                  <div className="inputs" contentEditable="true"></div>
+                </div>
+                <div className="three">
+                  <p>Dinner</p>
+                  <div className="inputs" contentEditable="true"></div>
+                </div>
+                <div className="four">
+                  <span>Tuesday</span>
+                  <div className="inputs" contentEditable="true"></div>
+                </div>
+                <div className="five">
+                  <div className="inputs" contentEditable="true"></div>
+                </div>
+                <div className="six"> 6</div>
+                <div className="seven">
+                  <span>Wednesday</span>
+                </div>
+                <div className="eight"> 8</div>
+                <div className="nine"> 9</div>
+                <div className="ten">
+                  <span>Thursday</span>
+                </div>
+                <div className="eleven">11 </div>
+                <div className="twelve">12 </div>
+                <div className="thirteen">
+                  <span>Friday</span>
+                </div>
+                <div className="fourteen">14 </div>
+                <div className="fifteen">15 </div>
+                <div className="sixteen">
+                  <span>Saturday</span>
+                </div>
+                <div className="seventeen">17 </div>
+                <div className="eighteen">18 </div>
+                <div className="nineteen">
+                  <span>Sunday</span>
+                </div>
+                <div className="twenty">20 </div>
+                <div className="twenty_one">21 </div>
+              </Figure>
+            </form>
+          </div>
         </article>
       </Main>
       <section className={`shopping_cart bg ${openShop ? "open" : ""} `}>
@@ -398,6 +457,75 @@ export default function Dashboard() {
     </DashboardWrap>
   );
 }
+
+const Figure = styled.figure`
+  width: calc(100% - 30px);
+  margin-left: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 100px;
+  .one,
+  .two,
+  .three,
+  .four,
+  .seven,
+  .ten,
+  .thirteen,
+  .sixteen,
+  .nineteen {
+    position: relative;
+    overflow: visible;
+  }
+  .one p,
+  .two p,
+  .three p {
+    content: "";
+    position: absolute;
+    height: 30px;
+    width: 100%;
+    top: -30px;
+    font-size: 16px;
+    border: 1px solid grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: pink;
+  }
+  .one span,
+  .four span,
+  .seven span,
+  .ten span,
+  .thirteen span,
+  .sixteen span,
+  .nineteen span {
+    position: absolute;
+    content: "";
+    width: 30px;
+    height: 100%;
+    left: -30px;
+    font-size: 16px;
+    border: 1px solid grey;
+    background-color: pink;
+    writing-mode: vertical-lr;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  > div {
+    border: 1px solid grey;
+    max-width: 280px;
+    text-align: center;
+    .inputs {
+      font-size: 14px;
+      padding: 5px;
+      word-wrap: break-word;
+      word-break: break-all;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+    }
+  }
+`;
 const DashboardWrap = styled.main`
   /* .........general classes.........  */
   .flex_center {
@@ -674,6 +802,9 @@ const Main = styled.main`
     h2 {
       text-align: center;
     }
+    .table_con {
+      margin-top: 45px;
+    }
   }
   .heading {
     text-align: center;
@@ -824,7 +955,7 @@ const Main = styled.main`
   @media screen and (min-width: 690px) {
     .favorites {
       .favorite_con {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 300px));
       }
     }
   }
