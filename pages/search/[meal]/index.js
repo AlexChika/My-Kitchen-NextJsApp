@@ -82,11 +82,13 @@ const Index = () => {
     let meal = mealInfo[0];
     for (let i = 1; i <= 20; i++) {
       if (meal[ing + i] !== null) {
-        if (meal[ing + i].trim().length > 0 || meal[ing + i] !== null) {
+        if (meal[ing + i].trim().length > 0) {
           ingr.push(meal[ing + i]);
         } else {
           break;
         }
+      } else {
+        break;
       }
     }
     return ingr;
