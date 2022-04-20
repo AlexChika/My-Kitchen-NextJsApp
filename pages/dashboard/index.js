@@ -538,7 +538,7 @@ export default function Dashboard() {
             {/* } */}
           </div>
         </article>
-        <article className="timetables mt-30">
+        <article className="timetables mt-30 mb-30">
           <h2 className="mb-10">My Weekly Meals</h2>
           <div className="tableControls flex_center">
             <button onClick={handleTableSettings}>
@@ -713,6 +713,7 @@ export default function Dashboard() {
             </form>
           </div>
         </article>
+        <h2 className="footer">Your own Kitchen</h2>
       </Main>
       <section className={`shopping_cart bg ${openShop ? "open" : ""} `}>
         <div className="heading">
@@ -871,9 +872,7 @@ const DashboardWrap = styled.main`
     width: 100%;
     height: 100%;
   }
-  .textcenter {
-    text-align: center;
-  }
+
   .mt-10 {
     margin-top: 10px;
   }
@@ -1128,7 +1127,7 @@ const DashboardWrap = styled.main`
   }
 `;
 const Main = styled.main`
-  margin-bottom: 50px;
+  padding-bottom: 50px;
   .heading {
     text-align: center;
     p {
@@ -1266,9 +1265,6 @@ const Main = styled.main`
     .table_con {
       margin-top: 45px;
     }
-    form {
-      margin-bottom: 50px;
-    }
     .table_btn {
       border: 1px solid white;
       border-top: none;
@@ -1288,6 +1284,12 @@ const Main = styled.main`
         color: white;
       }
     }
+  }
+  .footer {
+    font-family: "Lobster", cursive;
+    color: pink;
+    text-align: center;
+    padding-bottom: 25px;
   }
   /* end of favourites styling  */
   @media screen and (min-width: 320px) {
