@@ -331,7 +331,7 @@ export default function Dashboard() {
                   <p>BreakFast</p>
                   <span>Monday</span>
                   <div
-                    onInput={(e) => setValue(e.target.innerText)}
+                    onChange={(e) => setValue(e.target.innerText)}
                     className="inputs"
                     contentEditable="true"
                   >
