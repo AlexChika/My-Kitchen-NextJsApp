@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import { findMeals } from "../../utils/fetchers";
-import Modal from "../../components/modal";
+import Modal from "../../components/Modal";
 import { RotatingLines } from "react-loader-spinner";
 import Header from "../../components/Header";
 import Navigation from "../../components/Navigation";
