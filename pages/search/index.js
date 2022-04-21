@@ -1,37 +1,75 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { findMeals } from "../../utils/fetchers";
-import Modal from "../../components/Modal";
+import Modal from "../../components/modal";
 import { RotatingLines } from "react-loader-spinner";
-import Header from "../../components/Header";
-import Navigation from "../../components/Navigation";
+import Header from "../../components/header";
+import Navigation from "../../components/navigation";
+import { getdate } from "../dashboard/Index";
 export default function Search() {
+  const router = useRouter();
   const [searchword, setSearchword] = useState("");
   const [load, setLoad] = useState(false);
   const [modal, setModal] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [mealsarr, setMealsarr] = useState([]);
+  const [favourites, setFavourites] = useState([]);
   const [status, setStatus] = useState({
     isError: false,
     isLoading: false,
     isFetched: false,
     notFound: false,
   });
-  // const mealGridCon = useRef(null);
   useEffect(() => {
     if (!localStorage.getItem("status")) {
-      Router.push("/");
+      router.push("/");
     } else {
       setLoad(true);
-      setTimeout(() => {
-        // setModal(true);
-      }, 120000);
     }
+  }, []);
+  useEffect(() => {
+    const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+    setFavourites(favourites);
   }, []);
   const handleShowList = (e) => {
     e.currentTarget.nextElementSibling.classList.toggle("show");
+  };
+  const handleAddToFavourites = (meal) => {
+    const getIngr = (ing, meal) => {
+      let ingr = [];
+      for (let i = 1; i <= 20; i++) {
+        if (meal[ing + i] !== null) {
+          if (meal[ing + i].trim().length > 0) {
+            ingr.push(meal[ing + i]);
+          } else {
+            break;
+          }
+        } else {
+          break;
+        }
+      }
+      return ingr;
+    };
+    const name = meal.strMeal;
+    const img = meal.strMealThumb;
+    const ing = getIngr("strIngredient", meal);
+    const id = meal.idMeal;
+    const inList = [...favourites].find((favourite) => favourite.id === id);
+    if (inList) return;
+    const favourite = [
+      ...favourites,
+      {
+        date: getdate(),
+        name,
+        ing,
+        img,
+        id,
+      },
+    ];
+    setFavourites(favourite);
+    localStorage.setItem("favourites", JSON.stringify(favourite));
   };
   // const [accent, setAccent] = useState({
   //   color1: "tomato",
@@ -201,9 +239,14 @@ export default function Search() {
                           <i className="bi bi-three-dots"></i>
                         </button>
                         <div className={`tasks_list`}>
-                          <button>Add To Favourites</button>
-                          <button>Add To Calender</button>
-                          <button>Add To Timetable</button>
+                          <button
+                            onClick={(e) => {
+                              e.target.parentElement.classList.toggle("show");
+                              handleAddToFavourites(meal);
+                            }}
+                          >
+                            Add To Favourites
+                          </button>
                         </div>
                       </div>
                       <a href={`/search/${meal.strMeal + "=" + meal.idMeal}`}>
@@ -360,7 +403,7 @@ const Main = styled.main`
         button {
           font-size: 11px;
           width: 100%;
-          height: 2em;
+          height: 2.5em;
           color: white;
           margin-bottom: 10px;
           background: pink;
@@ -370,7 +413,7 @@ const Main = styled.main`
         }
       }
       .tasks_list.show {
-        height: 130px;
+        height: 50px;
         visibility: visible;
       }
     }

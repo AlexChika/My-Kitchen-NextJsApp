@@ -1,12 +1,11 @@
-import React from "react";
 import styled from "styled-components";
 
 const Modal = (props) => {
-  const { modal, setModal, children } = props;
+  const { modal, setModal, children, absolute } = props;
 
   return (
-    <ModalWrap modal={modal} className={` `}>
-      <div className="modal-body">
+    <ModalWrap absolute={absolute} modal={modal} className={` `}>
+      <div className="modal-body bg">
         <button onClick={() => setModal(!modal)} className="modal-btn btn">
           <i className="bi bi-x-circle"></i>
         </button>
@@ -18,6 +17,7 @@ const Modal = (props) => {
 export default Modal;
 const ModalWrap = styled.div`
   position: fixed;
+  position: ${({ absolute }) => (absolute ? "absolute" : "fixed")};
   top: 0;
   left: 0;
   right: 0;
@@ -25,6 +25,7 @@ const ModalWrap = styled.div`
   width: 100%;
   height: 100%;
   z-index: 10;
+  background: ${({ absolute }) => (absolute ? "rgba(0,0,0,0.6)" : "")};
   display: ${({ modal }) => (modal ? "block" : "none")};
   .modal-body {
     border: 2px solid pink;
@@ -34,7 +35,7 @@ const ModalWrap = styled.div`
     left: 50%;
     transform: translateX(-70%) translateY(-70%);
     opacity: 0;
-    background: rgb(26, 26, 39);
+    /* background: rgb(26, 26, 39); */
     border-radius: 15px;
     /* word-break: break-all; */
     word-wrap: break-word;

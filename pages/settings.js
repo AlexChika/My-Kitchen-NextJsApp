@@ -49,6 +49,11 @@ let initialState = {
   col2: "blue",
 };
 export default function Settings() {
+  useEffect(() => {
+    if (!localStorage.getItem("status")) {
+      router.push("/");
+    }
+  }, []);
   const [theme, setTheme] = useState("");
   const [accent, setAccent] = useState("");
   const [state, dispatch] = useReducer(reducer, initialState);

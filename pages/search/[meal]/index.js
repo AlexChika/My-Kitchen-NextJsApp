@@ -6,12 +6,13 @@ import {
   findMealCategory,
   findMealArea,
 } from "../../../utils/fetchers";
+import { getdate } from "../../dashboard/Index";
 import Image from "next/image";
 import styled from "styled-components";
 import { BallTriangle, ThreeDots } from "react-loader-spinner";
-import Header from "../../../components/Header";
-import Navigation from "../../../components/Navigation";
-import Modal from "../../../components/Modal";
+import Header from "../../../components/header";
+import Navigation from "../../../components/navigation";
+import Modal from "../../../components/modal";
 const Index = () => {
   // state for redirecting to home
   const [load, setLoad] = useState(false);
@@ -31,6 +32,8 @@ const Index = () => {
   const [mealsarr, setMealsarr] = useState([]);
   // state for setting selected ingredients to Modal
   const [selectedIngredient, setSelectedIngredient] = useState("");
+  // state for storing favourites
+  const [favourites, setFavourites] = useState([]);
   // state for conditional display
   const [status, setStatus] = useState({
     isError: false,
@@ -119,6 +122,30 @@ const Index = () => {
       setMealsarr(meals.meals);
     }
   };
+  const isfavourite = (id) => {
+    const inList = [...favourites].find((favourite) => favourite.id === id);
+    return inList;
+  };
+  const handleAddToFavourites = (meal) => {
+    const name = meal.strMeal;
+    const img = meal.strMealThumb;
+    const ing = getIngr("strIngredient");
+    const id = meal.idMeal;
+    const inList = [...favourites].find((favourite) => favourite.id === id);
+    if (inList) return;
+    const favourite = [
+      ...favourites,
+      {
+        date: getdate(),
+        name,
+        ing,
+        img,
+        id,
+      },
+    ];
+    setFavourites(favourite);
+    localStorage.setItem("favourites", JSON.stringify(favourite));
+  };
   // adding google search scripts
   useEffect(() => {
     (function () {
@@ -142,7 +169,6 @@ const Index = () => {
         return;
       }
       if (meal) {
-        console.log(meal);
         setMealInfo(meal.meals);
         setStatus({ isError: false, isLoading: false, isFetched: true });
         const { meals, isError } = await findMealCategory(
@@ -160,6 +186,8 @@ const Index = () => {
   };
   useEffect(() => {
     getMeal();
+    const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+    setFavourites(favourites);
   }, [router]);
   return (
     <>
@@ -242,10 +270,20 @@ const Index = () => {
                 </Modal>
                 <h1 className="heading">
                   {mealInfo[0].strMeal}{" "}
-                  <button>
+                  <button
+                    className={`${
+                      isfavourite(mealInfo[0].idMeal) ? "color" : ""
+                    }`}
+                  >
                     <i className="bi bi-heart-fill"></i>
                   </button>
                 </h1>
+                <button
+                  onClick={() => handleAddToFavourites(mealInfo[0])}
+                  className="addfavourite"
+                >
+                  Add To Favourite
+                </button>
                 <div className="image">
                   <Image
                     layout="fill"
@@ -417,38 +455,25 @@ const Index = () => {
                         ) : (
                           <div className="meal_grid_con">
                             {mealsarr.map((meal) => (
-                              <div className="meal_con" key={meal.idMeal}>
-                                <div className="tasks flex_center">
-                                  <button
-                                    onClick={handleShowList}
-                                    className="tasks_btn"
-                                  >
-                                    <i className="bi bi-three-dots"></i>
-                                  </button>
-                                  <div className={`tasks_list`}>
-                                    <button>Add To Favourites</button>
-                                    <button>Add To Calender</button>
-                                    <button>Add To Timetable</button>
+                              <a
+                                className="meal_con"
+                                key={meal.idMeal}
+                                href={`/search/${
+                                  meal.strMeal + "=" + meal.idMeal
+                                }`}
+                              >
+                                <div className="meal_card">
+                                  <Image
+                                    layout="fill"
+                                    placeholder="blurDataURL"
+                                    src={meal.strMealThumb}
+                                    alt={meal.strMeal}
+                                  />
+                                  <div className="meal_title">
+                                    <h4>{meal.strMeal}</h4>
                                   </div>
                                 </div>
-                                <a
-                                  href={`/search/${
-                                    meal.strMeal + "=" + meal.idMeal
-                                  }`}
-                                >
-                                  <div className="meal_card">
-                                    <Image
-                                      layout="fill"
-                                      placeholder="blurDataURL"
-                                      src={meal.strMealThumb}
-                                      alt={meal.strMeal}
-                                    />
-                                    <div className="meal_title">
-                                      <h4>{meal.strMeal}</h4>
-                                    </div>
-                                  </div>
-                                </a>
-                              </div>
+                              </a>
                             ))}
                           </div>
                         )}
@@ -517,9 +542,16 @@ const Section = styled.section`
       font-size: 25px;
     }
     /* make color for items in favourites */
-    button:focus {
+    button.color {
       color: pink;
     }
+  }
+  .addfavourite {
+    display: block;
+    width: max-content;
+    color: pink;
+    margin: 10px auto;
+    border-bottom: 1px solid gray;
   }
   .image {
     height: 60vh;
@@ -710,48 +742,6 @@ const Section = styled.section`
       text-align: center;
       color: white;
       z-index: 9;
-    }
-    .tasks {
-      position: absolute;
-      z-index: 9;
-      top: 0;
-      right: 0px;
-      width: 50px;
-      flex-direction: column;
-      .tasks_btn {
-        width: 100%;
-        height: 100%;
-        i {
-          font-size: 30px;
-          color: white;
-          text-shadow: 1px 1px 3px black;
-        }
-      }
-      .tasks_list {
-        position: relative;
-        width: 210%;
-        left: -105%;
-        padding: 10px 0px;
-        transition: all 0.3s linear;
-        height: 0;
-        overflow: hidden;
-        visibility: collapse;
-        button {
-          font-size: 11px;
-          width: 100%;
-          height: 2em;
-          color: white;
-          margin-bottom: 10px;
-          background: pink;
-          padding: 5px 0px;
-          border-radius: 15px;
-          box-shadow: 2px 2px 3px grey;
-        }
-      }
-      .tasks_list.show {
-        height: 130px;
-        visibility: visible;
-      }
     }
   }
   .modal {

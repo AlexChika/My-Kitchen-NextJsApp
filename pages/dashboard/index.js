@@ -1,9 +1,10 @@
 import Image from "next/image";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import styled from "styled-components";
-import Navigation from "../../components/Navigation";
+import Navigation from "../../components/navigation";
 import { useState, useEffect, useRef, useReducer } from "react";
 import { reducer } from "../../utils/reducers";
+import Modal from "../../components/modal";
 export function getdate() {
   const months = [
     "Jan",
@@ -25,7 +26,7 @@ export function getdate() {
   let hour = cal.getHours();
   let sub;
   if (date === 1 || date === 21 || date === 31) {
-    sub = "ist";
+    sub = "st";
   } else if (date === 2 || date === 22) {
     sub = "nd";
   } else if (date === 3 || date === 23) {
@@ -45,11 +46,15 @@ export function getdate() {
   } ${hour}:${cal.getMinutes()}${am}`;
 }
 export default function Dashboard() {
+  useEffect(() => {
+    if (!localStorage.getItem("status")) {
+      router.push("/");
+    }
+  }, []);
+  const router = useRouter();
   // .................. States For Shopping List ..................
   // reducer state for managing shoping lists
   const [state, dispatch] = useReducer(reducer, { lists: [] });
-  // state for name of user
-  const [name, setName] = useState("mcluckey1@gmail.com");
   // Alerter element
   const alerter = useRef(null);
   // state for inputing shopping Items values
@@ -62,12 +67,23 @@ export default function Dashboard() {
   const [openShop, setOpenShop] = useState(false);
   // ..................... States For Meal Of The Day......................
   const mealCon = useRef(null);
+  const [modalInput, setmodalInput] = useState({
+    break: { time: "", meridian: "" },
+    lunch: { time: "", meridian: "" },
+    dinner: { time: "", meridian: "" },
+  });
   const [mealTime, setMealTime] = useState({
     break: "7am",
     lunch: "1pm",
     dinner: "5pm",
   });
+  const [cooked, setCooked] = useState({
+    break: false,
+    lunch: false,
+    dinner: false,
+  });
   const [todayMeal, setTodayMeal] = useState(null);
+  const [date, setDate] = useState("");
   // ..................... States For timetable......................
   const tableValue = {
     mBreak: "Add Meal +",
@@ -92,7 +108,9 @@ export default function Dashboard() {
     suLunch: "Add Meal +",
     suDinner: "Add Meal +",
   };
-  // const [table, setTable] = useState(null);
+  const [modal, setModal] = useState(false);
+  // ..................... States For favourites......................
+  const [favourites, setFavourites] = useState([]);
   // ........functions for shopping list category............
   function alerts(text, color) {
     alerter.current.classList.add(color);
@@ -160,6 +178,21 @@ export default function Dashboard() {
     let hour = cal.getHours();
     return { day: days[cal.getDay()], hour: hour };
   };
+  const cookedHandler = (e) => {
+    const name = e.currentTarget.dataset.name;
+    if (name === "break") {
+      setCooked({ ...cooked, break: true });
+      localStorage.setItem("cooked", JSON.stringify(cooked));
+    }
+    if (name === "lunch") {
+      setCooked({ ...cooked, lunch: true });
+      localStorage.setItem("cooked", JSON.stringify(cooked));
+    }
+    if (name === "dinner") {
+      setCooked({ ...cooked, dinner: true });
+      localStorage.setItem("cooked", JSON.stringify(cooked));
+    }
+  };
   const mealofTheDay = () => {
     const table = JSON.parse(localStorage.getItem("table"));
     if (timeOfDay().hour < 12) {
@@ -175,63 +208,63 @@ export default function Dashboard() {
     if (timeOfDay().day === "Mon") {
       const { mBreak, mLunch, mDinner } = table;
       let meal = {
-        break: { meal: mBreak, cooked: false },
-        lunch: { meal: mLunch, cooked: false },
-        dinner: { meal: mDinner, cooked: false },
+        break: { meal: mBreak },
+        lunch: { meal: mLunch },
+        dinner: { meal: mDinner },
       };
       setTodayMeal(meal);
     }
     if (timeOfDay().day === "Tue") {
       const { tBreak, tLunch, tDinner } = table;
       let meal = {
-        break: { meal: tBreak, cooked: false },
-        lunch: { meal: tLunch, cooked: false },
-        dinner: { meal: tDinner, cooked: false },
+        break: { meal: tBreak },
+        lunch: { meal: tLunch },
+        dinner: { meal: tDinner },
       };
       setTodayMeal(meal);
     }
     if (timeOfDay().day === "Wed") {
       const { wBreak, wLunch, wDinner } = table;
       let meal = {
-        break: { meal: wBreak, cooked: false },
-        lunch: { meal: wLunch, cooked: false },
-        dinner: { meal: wDinner, cooked: false },
+        break: { meal: wBreak },
+        lunch: { meal: wLunch },
+        dinner: { meal: wDinner },
       };
       setTodayMeal(meal);
     }
     if (timeOfDay().day === "Thu") {
       const { thBreak, thLunch, thDinner } = table;
       let meal = {
-        break: { meal: thBreak, cooked: false },
-        lunch: { meal: thLunch, cooked: false },
-        dinner: { meal: thDinner, cooked: false },
+        break: { meal: thBreak },
+        lunch: { meal: thLunch },
+        dinner: { meal: thDinner },
       };
       setTodayMeal(meal);
     }
     if (timeOfDay().day === "Fri") {
       const { fBreak, fLunch, fDinner } = table;
       let meal = {
-        break: { meal: fBreak, cooked: false },
-        lunch: { meal: fLunch, cooked: false },
-        dinner: { meal: fDinner, cooked: false },
+        break: { meal: fBreak },
+        lunch: { meal: fLunch },
+        dinner: { meal: fDinner },
       };
       setTodayMeal(meal);
     }
     if (timeOfDay().day === "Sat") {
       const { sBreak, sLunch, sDinner } = table;
       let meal = {
-        break: { meal: sBreak, cooked: false },
-        lunch: { meal: sLunch, cooked: false },
-        dinner: { meal: sDinner, cooked: false },
+        break: { meal: sBreak },
+        lunch: { meal: sLunch },
+        dinner: { meal: sDinner },
       };
       setTodayMeal(meal);
     }
     if (timeOfDay().day === "Sun") {
       const { suBreak, suLunch, suDinner } = table;
       let meal = {
-        break: { meal: suBreak, cooked: false },
-        lunch: { meal: suLunch, cooked: false },
-        dinner: { meal: suDinner, cooked: false },
+        break: { meal: suBreak },
+        lunch: { meal: suLunch },
+        dinner: { meal: suDinner },
       };
       setTodayMeal(meal);
     }
@@ -241,7 +274,29 @@ export default function Dashboard() {
     meal.forEach((meal, index) => {
       meal.style.left = `${index * 100}%`;
     });
+    const cooked = JSON.parse(localStorage.getItem("cooked")) || {
+      break: false,
+      lunch: false,
+      dinner: false,
+    };
+    setCooked(cooked);
+    const mealTime = JSON.parse(localStorage.getItem("mealTime")) || {
+      break: "7am",
+      lunch: "1pm",
+      dinner: "5pm",
+    };
+    setMealTime(mealTime);
+  }, []);
+  useEffect(() => {
     mealofTheDay();
+    const date = new Date();
+    if (date.getHours() == 0)
+      setCooked({ break: false, lunch: false, dinner: false });
+  }, [date]);
+  useEffect(() => {
+    setInterval(() => {
+      setDate(getdate());
+    }, 6000);
   }, []);
   const showMeal = (no) => {
     const meal = mealCon.current.querySelectorAll(".meal");
@@ -250,15 +305,18 @@ export default function Dashboard() {
     });
   };
   // .............. functions for my favourites.............
-  const handleOpenFavorite = (id) => {
-    console.log("I opened search");
-    Router.push("/search");
+  const handleOpenFavorite = (id, name) => {
+    router.push(`/search/${name + "=" + id}`);
   };
   const handleRemoveFavorite = (dataid) => {
     console.log("I was remove");
     const el = document.querySelector(`[data-id = ${dataid}]`);
     el.remove();
   };
+  useEffect(() => {
+    const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+    setFavourites(favourites);
+  }, []);
   // ................. functions for timetable...............
   const dom = (id) => {
     return document.querySelector(`[data-name = ${id}]`);
@@ -293,14 +351,16 @@ export default function Dashboard() {
     renderTable(tableData);
     mealofTheDay();
   };
-  const handleTableSettings = () => {
-    let mytable = {
-      time: {
-        break: "12am",
-        lunch: "12am",
-        dinner: "12am",
-      },
+  const handleModalInputs = (e) => {
+    e.preventDefault();
+    const mealTime = {
+      break: modalInput.break.time + modalInput.break.meridian,
+      lunch: modalInput.lunch.time + modalInput.lunch.meridian,
+      dinner: modalInput.dinner.time + modalInput.dinner.meridian,
     };
+    localStorage.setItem("mealTime", JSON.stringify(mealTime));
+    e.target.reset();
+    setMealTime(mealTime);
   };
   const renderTable = (table) => {
     const inputs = [...document.querySelectorAll(".inputs")];
@@ -308,6 +368,7 @@ export default function Dashboard() {
       let dataname = input.dataset.name;
       let { [dataname]: name } = table;
       input.textContent = name;
+      input.focus();
     });
   };
   useEffect(() => {
@@ -330,7 +391,7 @@ export default function Dashboard() {
           <span className="flex_center">{state.lists.length}</span>
         </button>
         <div className="heading_con">
-          <h1>{name || "User"}</h1>
+          <h1>Your own Kitchen</h1>
           <div className="heading flex_center">
             <p>Cook Better, Live Better</p>
             <div className="iconwrap">
@@ -343,7 +404,7 @@ export default function Dashboard() {
       <Main className="mt-20">
         <div className="heading mb-20">
           <h2>Today&apos;s Meal</h2>
-          <p>{getdate()}</p>
+          <p>{date}</p>
         </div>
         <article className="today_meal flex_col_center">
           <div ref={mealCon} className="meal_con">
@@ -359,15 +420,15 @@ export default function Dashboard() {
                     <p> Meal for {mealTime.break}</p>
                   </div>
                   <div className="head flex_col_center">
-                    <button>
-                      {todayMeal && todayMeal.cooked ? (
+                    <button data-name="break" onClick={cookedHandler}>
+                      {cooked.break ? (
                         <i
-                          style={{ color: "green" }}
+                          style={{ color: "#B4FF9F" }}
                           className="bi bi-toggle-on"
                         ></i>
                       ) : (
                         <i
-                          style={{ color: "tomato" }}
+                          style={{ color: "skyblue" }}
                           className="bi bi-toggle-off"
                         ></i>
                       )}
@@ -379,16 +440,6 @@ export default function Dashboard() {
                   <h3 className="mb-10 mt-20">
                     {todayMeal && todayMeal.break.meal}
                   </h3>
-                  {/* <div className="all_meal">
-                    <p>1 Sardines and Egg</p>
-                    <p>2 Bread and Butter</p>
-                    <p>3 Coffee and Cheese</p>
-                  </div> */}
-                  {/* <div className="main_meal_btns mt-20 flex_center">
-                    <button>meal1 info</button>
-                    <button>meal2 info</button>
-                    <button>meal3 info</button>
-                  </div> */}
                 </div>
               </div>
             }
@@ -404,15 +455,15 @@ export default function Dashboard() {
                     <p>Meal for {mealTime.lunch}</p>
                   </div>
                   <div className="head flex_col_center">
-                    <button>
-                      {todayMeal && todayMeal.cooked ? (
+                    <button data-name="lunch" onClick={cookedHandler}>
+                      {cooked.lunch ? (
                         <i
-                          style={{ color: "green" }}
+                          style={{ color: "#B4FF9F" }}
                           className="bi bi-toggle-on"
                         ></i>
                       ) : (
                         <i
-                          style={{ color: "tomato" }}
+                          style={{ color: "skyblue" }}
                           className="bi bi-toggle-off"
                         ></i>
                       )}
@@ -424,16 +475,6 @@ export default function Dashboard() {
                   <h3 className="mb-10 mt-20">
                     {todayMeal && todayMeal.lunch.meal}
                   </h3>
-                  {/* <div className="all_meal">
-                    <p>1 Sardines and Egg</p>
-                    <p>2 Bread and Butter</p>
-                    <p>3 Coffee and Cheese</p>
-                  </div>
-                  <div className="main_meal_btns mt-20 flex_center">
-                    <button>meal1 info</button>
-                    <button>meal2 info</button>
-                    <button>meal3 info</button>
-                  </div> */}
                 </div>
               </div>
             }
@@ -449,15 +490,15 @@ export default function Dashboard() {
                     <p>{mealTime.dinner}</p>
                   </div>
                   <div className="head flex_col_center">
-                    <button>
-                      {todayMeal && todayMeal.cooked ? (
+                    <button data-name="dinner" onClick={cookedHandler}>
+                      {cooked.dinner ? (
                         <i
-                          style={{ color: "green" }}
+                          style={{ color: "#B4FF9F" }}
                           className="bi bi-toggle-on"
                         ></i>
                       ) : (
                         <i
-                          style={{ color: "tomato" }}
+                          style={{ color: "skyblue" }}
                           className="bi bi-toggle-off"
                         ></i>
                       )}
@@ -469,16 +510,6 @@ export default function Dashboard() {
                   <h3 className="mb-10 mt-20">
                     {todayMeal && todayMeal.dinner.meal}
                   </h3>
-                  {/* <div className="all_meal">
-                    <p>1 Sardines and Egg</p>
-                    <p>2 Bread and Butter</p>
-                    <p>3 Coffee and Cheese</p>
-                  </div>
-                  <div className="main_meal_btns mt-20 flex_center">
-                    <button>meal1 info</button>
-                    <button>meal2 info</button>
-                    <button>meal3 info</button>
-                  </div> */}
                 </div>
               </div>
             }
@@ -494,55 +525,270 @@ export default function Dashboard() {
             My Favourites{" "}
             <i style={{ color: "pink" }} className="bi bi-heart-fill"></i>
           </h2>
-          <div className="favorite_con">
-            {/* { */}
-            <figure data-id="hello" className="favourite_card_con">
-              <button
-                onClick={() => handleRemoveFavorite("hello")}
-                className="delete"
-              >
-                <i
-                  style={{ userSelect: "none" }}
-                  className="bi bi-trash-fill"
-                ></i>
-              </button>
-              <div
-                onClick={handleOpenFavorite}
-                style={{ cursor: "pointer" }}
-                className="favourite_card"
-              >
-                <div className="card_info">
-                  <h3>name of food</h3>
-                  <div>
-                    <ul>
-                      <li>canola oil</li>
-                      <li>red peper</li>
-                      <li>youghurt cream</li>
-                      <li>noodles</li>
-                      <li>grain flour</li>
-                    </ul>
+          {favourites.length < 1 ? (
+            <div className="no_favourites flex_center mt-20">
+              <h3>You Have No Favorites</h3>
+            </div>
+          ) : (
+            <div className="favorite_con">
+              {favourites.map((favourite) => (
+                <figure
+                  key={favourite.id}
+                  data-id="hello"
+                  className="favourite_card_con"
+                >
+                  <button
+                    onClick={() => handleRemoveFavorite("hello")}
+                    className="delete"
+                  >
+                    <i
+                      style={{ userSelect: "none" }}
+                      className="bi bi-trash-fill"
+                    ></i>
+                  </button>
+                  <div
+                    onClick={() =>
+                      handleOpenFavorite(favourite.id, favourite.name)
+                    }
+                    style={{ cursor: "pointer" }}
+                    className="favourite_card"
+                  >
+                    <div className="card_info">
+                      <h3>{favourite.name}</h3>
+                      <div>
+                        <ul>
+                          {favourite.ing.slice(0, 5).map((ing, index) => (
+                            <li key={index}>{ing}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="card_img">
+                      <p className="date">{favourite.date}</p>
+                      <Image
+                        layout="fill"
+                        placeholder="blurDataURL"
+                        alt={favourite.name}
+                        src={favourite.img}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="card_img">
-                  <p className="date"> 12th may 4am</p>
-                  <Image
-                    layout="fill"
-                    placeholder="blurDataURL"
-                    alt={"favourite"}
-                    src="https://www.themealdb.com/images/media/meals/atd5sh1583188467.jpg"
-                  />
-                </div>
-              </div>
-            </figure>
-
-            {/* } */}
-          </div>
+                </figure>
+              ))}
+            </div>
+          )}
         </article>
         <article className="timetables mt-30 mb-30">
+          <Modal absolute={true} modal={modal} setModal={setModal}>
+            <form className="modal" onSubmit={handleModalInputs}>
+              <h4 className="mb-10">BreakFast Time</h4>
+              <div className="form_control flex_center">
+                <label htmlFor="breakfast">BreakFast</label>
+                <select
+                  onChange={(e) =>
+                    setmodalInput({
+                      ...modalInput,
+                      break: { ...modalInput.break, time: e.target.value },
+                    })
+                  }
+                  required
+                  name="breakfast"
+                  id="breakfast"
+                >
+                  <option value=""></option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <label htmlFor="b-am">
+                  AM
+                  <input
+                    onChange={(e) =>
+                      setmodalInput({
+                        ...modalInput,
+                        break: {
+                          ...modalInput.break,
+                          meridian: e.target.value,
+                        },
+                      })
+                    }
+                    required
+                    value="am"
+                    type="radio"
+                    name="break"
+                    id="b-am"
+                  />
+                </label>
+                <label htmlFor="b-pm">
+                  PM
+                  <input
+                    onChange={(e) =>
+                      setmodalInput({
+                        ...modalInput,
+                        break: {
+                          ...modalInput.break,
+                          meridian: e.target.value,
+                        },
+                      })
+                    }
+                    required
+                    value="pm"
+                    type="radio"
+                    name="break"
+                    id="b-pm"
+                  />
+                </label>
+              </div>
+              <h4 className="mt-10">Lunch Time</h4>
+              <div className="form_control flex_center">
+                <label htmlFor="lunch">Lunch</label>
+                <select
+                  onChange={(e) =>
+                    setmodalInput({
+                      ...modalInput,
+                      lunch: { ...modalInput.lunch, time: e.target.value },
+                    })
+                  }
+                  required
+                  name="lunch"
+                  id="lunch"
+                >
+                  <option value=""></option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <label htmlFor="l-am">
+                  AM
+                  <input
+                    onChange={(e) =>
+                      setmodalInput({
+                        ...modalInput,
+                        lunch: {
+                          ...modalInput.lunch,
+                          meridian: e.target.value,
+                        },
+                      })
+                    }
+                    required
+                    value="am"
+                    type="radio"
+                    name="lunch"
+                    id="l-am"
+                  />
+                </label>
+                <label htmlFor="l-pm">
+                  PM
+                  <input
+                    onChange={(e) =>
+                      setmodalInput({
+                        ...modalInput,
+                        lunch: {
+                          ...modalInput.lunch,
+                          meridian: e.target.value,
+                        },
+                      })
+                    }
+                    required
+                    value="pm"
+                    type="radio"
+                    name="lunch"
+                    id="l-pm"
+                  />
+                </label>
+              </div>
+              <h4 className="mt-10">Dinner Time</h4>
+              <div className="form_control flex_center">
+                <label htmlFor="dinner">Dinner</label>
+                <select
+                  onChange={(e) =>
+                    setmodalInput({
+                      ...modalInput,
+                      dinner: { ...modalInput.dinner, time: e.target.value },
+                    })
+                  }
+                  required
+                  name="dinner"
+                  id="dinner"
+                >
+                  <option value=""></option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                </select>
+                <label htmlFor="d-am">
+                  AM
+                  <input
+                    onChange={(e) =>
+                      setmodalInput({
+                        ...modalInput,
+                        dinner: {
+                          ...modalInput.dinner,
+                          meridian: e.target.value,
+                        },
+                      })
+                    }
+                    required
+                    value="am"
+                    type="radio"
+                    name="dinner"
+                    id="d-am"
+                  />
+                </label>
+                <label htmlFor="d-pm">
+                  PM
+                  <input
+                    onChange={(e) =>
+                      setmodalInput({
+                        ...modalInput,
+                        dinner: {
+                          ...modalInput.dinner,
+                          meridian: e.target.value,
+                        },
+                      })
+                    }
+                    required
+                    value="pm"
+                    type="radio"
+                    name="dinner"
+                    id="d-pm"
+                  />
+                </label>
+              </div>
+              <button className="form_btn fullwh mt-20">Set Time</button>
+            </form>
+          </Modal>
           <h2 className="mb-10">My Weekly Meals</h2>
-          <div className="tableControls flex_center">
-            <button onClick={handleTableSettings}>
-              <span>table settings</span>
+          <div className="tableControls">
+            <button className="fullwh" onClick={() => setModal(true)}>
+              <span>Table settings </span>
               <i className="bi bi-gear-fill"></i>
             </button>
           </div>
@@ -953,7 +1199,9 @@ const DashboardWrap = styled.main`
         }
       }
       h1 {
-        font-size: 20px;
+        font-size: 30px;
+        font-family: "Lobster", cursive;
+        color: pink;
       }
     }
   }
@@ -1134,6 +1382,25 @@ const Main = styled.main`
       font-size: 14px;
     }
   }
+  .modal {
+    .select {
+      overflow: auto;
+    }
+    text-align: center;
+    h4 {
+      padding: 5px 0px;
+    }
+    .form_control {
+      justify-content: space-between;
+    }
+    .form_btn {
+      border: 2px solid pink;
+      border-radius: 10px;
+      padding: 5px;
+      font-size: 20px;
+      font-family: "Lobster", cursive;
+    }
+  }
   /* end of heading styles */
   .today_meal {
     width: 97%;
@@ -1170,7 +1437,6 @@ const Main = styled.main`
       h3 {
         font-style: italic;
         color: pink;
-        letter-spacing: 0.3em;
       }
     }
     .meal_btns {
@@ -1185,17 +1451,22 @@ const Main = styled.main`
     h2 {
       text-align: center;
     }
+    .no_favourites {
+      box-shadow: 1px 1px 1px grey;
+      height: 15vh;
+      justify-content: center;
+    }
     .favorite_con {
-      max-height: 50vh;
+      max-height: 55vh;
       width: 97%;
       margin: 0 auto;
       margin-top: 10px;
       display: grid;
       grid-template-columns: minmax(1fr, 280px);
-      grid-auto-rows: 150px;
+      grid-auto-rows: auto;
       justify-content: center;
       column-gap: 1em;
-      row-gap: 2em;
+      row-gap: 1em;
       overflow-x: auto;
     }
     .favourite_card_con {
@@ -1258,9 +1529,26 @@ const Main = styled.main`
       }
     }
   }
+  /* end of favourites styling */
   .timetables {
     h2 {
       text-align: center;
+    }
+    .tableControls {
+      width: 80%;
+      text-align: center;
+      margin: 0 auto;
+      button {
+        justify-content: center;
+        border: 2px solid pink;
+        border-radius: 10px;
+        padding: 5px;
+        font-size: 20px;
+        span {
+          font-family: "Lobster", cursive;
+          font-style: italic;
+        }
+      }
     }
     .table_con {
       margin-top: 45px;
@@ -1285,13 +1573,13 @@ const Main = styled.main`
       }
     }
   }
+  /* end of timetables styling */
   .footer {
     font-family: "Lobster", cursive;
     color: pink;
     text-align: center;
     padding-bottom: 25px;
   }
-  /* end of favourites styling  */
   @media screen and (min-width: 320px) {
     .favorites {
       .favourite_card {
