@@ -5,9 +5,9 @@ import styled from "styled-components";
 import { findMeals } from "../../utils/fetchers";
 import Modal from "../../components/modal";
 import { RotatingLines } from "react-loader-spinner";
-import Header from "../../components/header";
-import Navigation from "../../components/navigation";
-import { getdate } from "../dashboard/Index";
+import Header from "../../components/Header";
+import Navigation from "../../components/Navigation";
+import { getdate } from "../dashboard/index";
 export default function Search() {
   const router = useRouter();
   const [searchword, setSearchword] = useState("");

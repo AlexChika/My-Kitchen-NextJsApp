@@ -6,13 +6,13 @@ import {
   findMealCategory,
   findMealArea,
 } from "../../../utils/fetchers";
-import { getdate } from "../../dashboard/Index";
+import { getdate } from "../../dashboard/index";
 import Image from "next/image";
 import styled from "styled-components";
 import { BallTriangle, ThreeDots } from "react-loader-spinner";
-import Header from "../../../components/header";
-import Navigation from "../../../components/navigation";
-import Modal from "../../../components/modal";
+import Header from "../../../components/Header";
+import Navigation from "../../../components/Navigation";
+import Modal from "../../../components/Modal";
 const MealPage = () => {
   // state for redirecting to home
   const [load, setLoad] = useState(false);
