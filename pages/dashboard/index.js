@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import Navigation from "../../components/navigation";
+import Navigation from "../../components/Navigation";
 import { useState, useEffect, useRef, useReducer } from "react";
 import { reducer } from "../../utils/reducers";
-import Modal from "../../components/modal";
+import Modal from "../../components/Modal";
 export function getdate() {
   const months = [
     "Jan",

@@ -13,7 +13,7 @@ import { BallTriangle, ThreeDots } from "react-loader-spinner";
 import Header from "../../../components/header";
 import Navigation from "../../../components/navigation";
 import Modal from "../../../components/modal";
-const Index = () => {
+const MealPage = () => {
   // state for redirecting to home
   const [load, setLoad] = useState(false);
   // state for handling tags
@@ -493,7 +493,7 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default MealPage;
 const Main = styled.main`
   color: white;
   position: relative;
