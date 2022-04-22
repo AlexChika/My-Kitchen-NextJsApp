@@ -81,6 +81,7 @@ export default function Dashboard() {
     break: false,
     lunch: false,
     dinner: false,
+    day: "",
   });
   const [todayMeal, setTodayMeal] = useState(null);
   const [date, setDate] = useState("");
@@ -186,16 +187,19 @@ export default function Dashboard() {
   const cookedHandler = (e) => {
     const name = e.currentTarget.dataset.name;
     if (name === "break") {
-      setCooked({ ...cooked, break: true });
-      localStorage.setItem("cooked", JSON.stringify(cooked));
+      const newCook = { ...cooked, break: true, day: timeOfDay().day };
+      setCooked(newCook);
+      localStorage.setItem("cooked", JSON.stringify(newCook));
     }
     if (name === "lunch") {
-      setCooked({ ...cooked, lunch: true });
-      localStorage.setItem("cooked", JSON.stringify(cooked));
+      const newCook = { ...cooked, lunch: true, day: timeOfDay().day };
+      setCooked(newCook);
+      localStorage.setItem("cooked", JSON.stringify(newCook));
     }
     if (name === "dinner") {
-      setCooked({ ...cooked, dinner: true });
-      localStorage.setItem("cooked", JSON.stringify(cooked));
+      const newCook = { ...cooked, dinner: true, day: timeOfDay().day };
+      setCooked(newCook);
+      localStorage.setItem("cooked", JSON.stringify(newCook));
     }
   };
   const mealofTheDay = () => {
@@ -283,6 +287,7 @@ export default function Dashboard() {
       break: false,
       lunch: false,
       dinner: false,
+      day: "",
     };
     setCooked(cooked);
     const mealTime = JSON.parse(localStorage.getItem("mealTime")) || {
@@ -294,9 +299,16 @@ export default function Dashboard() {
   }, []);
   useEffect(() => {
     mealofTheDay();
-    const date = new Date();
-    if (date.getHours() == 0)
-      setCooked({ break: false, lunch: false, dinner: false });
+    const cooked = JSON.parse(localStorage.getItem("cooked"));
+    if (cooked) {
+      if (timeOfDay().day !== cooked.day) {
+        setCooked({ break: false, lunch: false, dinner: false, day: "" });
+        localStorage.setItem(
+          "cooked",
+          JSON.stringify({ break: false, lunch: false, dinner: false, day: "" })
+        );
+      }
+    }
   }, [date]);
   useEffect(() => {
     setInterval(() => {
@@ -369,11 +381,13 @@ export default function Dashboard() {
   };
   const renderTable = (table) => {
     const inputs = [...document.querySelectorAll(".inputs")];
-    inputs.forEach((input) => {
+    inputs.forEach((input, index) => {
       let dataname = input.dataset.name;
       let { [dataname]: name } = table;
       input.textContent = name;
-      input.focus();
+      if (index === 0) {
+        input.focus();
+      }
     });
   };
   useEffect(() => {
