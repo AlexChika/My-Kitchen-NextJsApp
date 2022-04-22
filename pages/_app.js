@@ -1,19 +1,19 @@
 import { ThemeProvider } from "styled-components";
-import { GlobalStyles, Themes } from "../styles/theme.config";
+import { GlobalStyles, lightTheme, darkTheme } from "../styles/theme.config";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 function MyApp({ Component, pageProps }) {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
   useEffect(() => {
-    if (localStorage.getItem("theme")) {
-      const storagetheme = localStorage.getItem("theme");
-      setTheme(storagetheme);
+    if (localStorage.getItem("style")) {
+      const storagetheme = JSON.parse(localStorage.getItem("style"));
+      setTheme(storagetheme.theme);
     }
-  });
+  }, []);
   const isTrueSet = theme === "light";
   return (
     <>
-      <ThemeProvider theme={Themes}>
+      <ThemeProvider theme={isTrueSet ? lightTheme : darkTheme}>
         <GlobalStyles />
         <Header />
         <Component {...pageProps} />

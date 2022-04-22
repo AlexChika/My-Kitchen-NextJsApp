@@ -86,27 +86,32 @@ export default function Dashboard() {
   const [date, setDate] = useState("");
   // ..................... States For timetable......................
   const tableValue = {
-    mBreak: "Add Meal +",
-    mLunch: "Add Meal +",
-    mDinner: "Add Meal +",
-    tBreak: "Add Meal +",
-    tLunch: "Add Meal +",
-    tDinner: "Add Meal +",
-    wBreak: "Add Meal +",
-    wLunch: "Add Meal +",
-    wDinner: "Add Meal +",
-    thBreak: "Add Meal +",
-    thLunch: "Add Meal +",
-    thDinner: "Add Meal +",
-    fBreak: "Add Meal +",
-    fLunch: "Add Meal +",
-    fDinner: "Add Meal +",
-    sBreak: "Add Meal +",
-    sLunch: "Add Meal +",
-    sDinner: "Add Meal +",
-    suBreak: "Add Meal +",
-    suLunch: "Add Meal +",
-    suDinner: "Add Meal +",
+    mBreak: "cinnamon sugar and oatmeal, tangerine, yogurt. 280 cal",
+    mLunch:
+      "Turkey Sandwich on wheat bread, Grapes, carrots, nutri grain. 703 cal",
+    mDinner: "Baked catfish, home made fries. 390 cal",
+    tBreak: "cereal, 2% milk, banana. 260 cal",
+    tLunch:
+      "White Rice, Nigerian stew, turkey, apple, sweet corn, sun chips. 834 cal",
+    tDinner: "Beans and plantains. 350 cal",
+    wBreak: "Boiled eggs, home made hash browns. 250 cal",
+    wLunch: "Grilled chicken salad, soup, pomegranate. 645 cal",
+    wDinner: "Baked Tilapia, mixed vegetables, mango. 590 cal",
+    thBreak: "Cereal, 2% milk, banana. 260 cal",
+    thLunch: "spaghetti, chicken, grapes, carrots, nutri grain. 580 cal",
+    thDinner: "Peppered chicken, fried rice. 687 cal",
+    fBreak: "cinnamon sugar oatmeal, tangerine, yoghurt. 280 cal",
+    fLunch:
+      "Turkey sandwich on wheat bread, Grapes, carrots, nutri grain. 703 cal",
+    fDinner: "noodles, chicken. 485 cal",
+    sBreak: "Boiled eggs, home made hash browns. 248 cal",
+    sLunch: "Pounded yam, okra, stew, turkey. 338 cal",
+    sDinner:
+      "White Rice, Nigerian stew, Chicken, apple, corn lays chips. 834 cal",
+    suBreak: "Pancakes / Bread, Eggs and Sausage",
+    suLunch: "Shrimp fried Rice and salad with chicken",
+    suDinner:
+      "Boiled / Fried / Grilled semi ripe plantain, tomato sauce and grilled / fried fish",
   };
   const [modal, setModal] = useState(false);
   // ..................... States For favourites......................
@@ -308,10 +313,10 @@ export default function Dashboard() {
   const handleOpenFavorite = (id, name) => {
     router.push(`/search/${name + "=" + id}`);
   };
-  const handleRemoveFavorite = (dataid) => {
-    console.log("I was remove");
-    const el = document.querySelector(`[data-id = ${dataid}]`);
-    el.remove();
+  const handleRemoveFavorite = (id) => {
+    const favourite = favourites.filter((fav) => fav.id !== id);
+    localStorage.setItem("favourites", JSON.stringify(favourite));
+    setFavourites(favourite);
   };
   useEffect(() => {
     const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
@@ -532,13 +537,9 @@ export default function Dashboard() {
           ) : (
             <div className="favorite_con">
               {favourites.map((favourite) => (
-                <figure
-                  key={favourite.id}
-                  data-id="hello"
-                  className="favourite_card_con"
-                >
+                <figure key={favourite.id} className="favourite_card_con">
                   <button
-                    onClick={() => handleRemoveFavorite("hello")}
+                    onClick={() => handleRemoveFavorite(favourite.id)}
                     className="delete"
                   >
                     <i
@@ -1146,7 +1147,6 @@ const DashboardWrap = styled.main`
     color: inherit;
   }
   /* .........general styles............ */
-  color: white;
   width: 100%;
   max-width: 768px;
   margin: 0 auto;

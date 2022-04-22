@@ -1,208 +1,192 @@
 import styled from "styled-components";
 import Header from "../components/Header";
 import Navigation from "../components/Navigation";
-import { useState, useReducer, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Router from "next/router";
-const reducer = (state, action) => {
-  if (action.type === "LIGHT_THEME") {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("theme", "light");
-    }
-  }
-  // ........
-  if (action.type === "BLACK_THEME") {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("theme", "dark");
-    }
-  }
-  // ........
-  if (action.type === "TB_ACCENT") {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(
-        "accent",
-        JSON.stringify({ color1: "tomato", color2: " rgb(17, 227, 241)" })
-      );
-    }
-  }
-  // ........
-  if (action.type === "PC_ACCENT") {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(
-        "accent",
-        JSON.stringify({ color1: "pink", color2: "chocolate" })
-      );
-    }
-  }
-  // ........
-  if (action.type === "GV_ACCENT") {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(
-        "accent",
-        JSON.stringify({ color1: "gold", color2: "violet" })
-      );
-    }
-  }
-  return state;
-};
-let initialState = {
-  col1: "red",
-  col2: "blue",
-};
 export default function Settings() {
+  const [load, setLoad] = useState(false);
   useEffect(() => {
     if (!localStorage.getItem("status")) {
-      router.push("/");
+      Router.push("/");
+    } else {
+      setLoad(true);
     }
   }, []);
-  const [theme, setTheme] = useState("");
-  const [accent, setAccent] = useState("");
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const themeHandleChange = (e) => {
-    console.log(e.target.value);
-    setTheme(e.target.value);
+  const defaultStyle = {
+    theme: "dark",
+    accent: {
+      col1: "tomato",
+      col2: "skyblue",
+    },
   };
-  const accentHandleChange = (e) => {
-    console.log(e.target.value);
-    setAccent(e.target.value);
-  };
-  const HandleSettings = async (e) => {
+  const [style, setStyle] = useState(defaultStyle);
+  const HandleSettings = (e) => {
     e.preventDefault();
-    if (theme === "light") {
-      dispatch({ type: "LIGHT_THEME" });
-    }
-    if (theme === "dark") {
-      dispatch({ type: "BLACK_THEME" });
-    }
-    if (accent === "TB") {
-      dispatch({ type: "TB_ACCENT" });
-    }
-    if (accent === "PC") {
-      dispatch({ type: "PC_ACCENT" });
-    }
-    if (accent === "GV") {
-      dispatch({ type: "GV_ACCENT" });
-    }
-    Router.push("/");
+    e.target.reset();
+    localStorage.setItem("style", JSON.stringify(style));
   };
   return (
     <>
-      <Header bg={"settings"}>
+      <Header>
         <meta
           name="description"
-          content="Whisper | The EveryOne Blog. Whispering To Your Eyes and Ears. This is a next.js project featuring beautiful layouts and theme changing capabilities"
+          content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
         />
-        <title>
-          Settings at Whisper | The Everyone&apos;s Blog| Customise Your Blog |
-          Whisper with Beauty{" "}
-        </title>
+        <meta
+          content="My Kitchen | Search For Meals| Search For Recipees|"
+          property="og:title"
+        />
+        <meta
+          content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
+          property="og:description"
+        />
+        <meta content="article" property="og:type" />
+        <meta
+          content={`https://mykitchen.vercel.app/settings`}
+          property="og:url"
+        />
+        <title>My Kitchen | Search For Meals | Search For Recipees|</title>
       </Header>
-      <SettingCon>
-        <form className="bg" onSubmit={HandleSettings}>
-          <h2 className="mb-20 c-accent1">Customize Your App&apos;s Theme</h2>
-          <div className="input-con mb-10 bg-p">
-            <h3>Themes</h3>
-            <div className="input">
-              <label className="thlab" htmlFor="light">
-                <p>Light Theme</p>
-                <span className="light"></span>
-              </label>
-              <input
-                onChange={themeHandleChange}
-                required
-                value="light"
-                type="radio"
-                name="theme"
-                id="light"
-              />
-            </div>
-            {/* .......    //  ........ */}
-            <div className="input">
-              <label className="thlab" htmlFor="dark">
-                <p>Dark Theme</p>
-                <span className="dark"></span>
-              </label>
-              <input
-                onChange={themeHandleChange}
-                required
-                type="radio"
-                name="theme"
-                id="dark"
-                value="dark"
-              />
-            </div>
-          </div>
-          {/* .........   ..........  */}
-          <div className="input-con mb-10 bg-p">
-            <div>
-              <h3>Accent Colors</h3>
-              {/*....... //..... */}
+      {load ? (
+        <SettingCon>
+          <form className="bg" onSubmit={HandleSettings}>
+            <h2 className="mb-20 c-accent1">Customize Your App&apos;s Theme</h2>
+            <div className="input-con mb-10 bg-p">
+              <h3>Themes</h3>
               <div className="input">
-                <label className="acclab" htmlFor="tb">
-                  <p>Tomato and Blue</p>
-                  <div>
-                    <span className="tb"></span>
-                    <span className="tb"></span>
-                  </div>
+                <label className="thlab" htmlFor="light">
+                  <p>Light Theme</p>
+                  <span className="light"></span>
                 </label>
                 <input
-                  onChange={accentHandleChange}
-                  value="TB"
+                  onChange={(e) =>
+                    setStyle({ ...style, theme: e.target.value })
+                  }
                   required
+                  value="light"
                   type="radio"
-                  name="accent"
-                  id="tb"
+                  name="theme"
+                  id="light"
                 />
               </div>
-              {/*....... //..... */}
+              {/* .......    //  ........ */}
               <div className="input">
-                <label className="acclab" htmlFor="pc">
-                  <p>Pink and Chocolate</p>
-                  <div>
-                    <span className="pc"></span>
-                    <span className="pc"></span>
-                  </div>
+                <label className="thlab" htmlFor="dark">
+                  <p>Dark Theme</p>
+                  <span className="dark"></span>
                 </label>
                 <input
-                  onChange={accentHandleChange}
-                  value="PC"
+                  onChange={(e) =>
+                    setStyle({ ...style, theme: e.target.value })
+                  }
                   required
                   type="radio"
-                  name="accent"
-                  id="pc"
-                />
-              </div>
-              {/*....... //..... */}
-              <div className="input">
-                <label className="acclab" htmlFor="gv">
-                  <p>Gold and Violet</p>
-                  <div>
-                    <span className="gv"></span>
-                    <span className="gv"></span>
-                  </div>
-                </label>
-                <input
-                  onChange={accentHandleChange}
-                  value="GV"
-                  required
-                  type="radio"
-                  name="accent"
-                  id="gv"
+                  name="theme"
+                  id="dark"
+                  value="dark"
                 />
               </div>
             </div>
-            <p></p>
-          </div>
-          <div className="input-con bg-p">
-            <input className="bg" type="submit" value="Customise" />
-          </div>
-        </form>
-        <Navigation current={"settings"} />
-      </SettingCon>
+            {/* .........   ..........  */}
+            <div className="input-con mb-10 bg-p">
+              <div>
+                <h3>Accent Colors</h3>
+                {/*....... //..... */}
+                <div className="input">
+                  <label className="acclab" htmlFor="tb">
+                    <p>Tomato and Blue</p>
+                    <div>
+                      <span className="tb"></span>
+                      <span className="tb"></span>
+                    </div>
+                  </label>
+                  <input
+                    onChange={(e) =>
+                      setStyle({
+                        ...style,
+                        accent: {
+                          col1: "tomato",
+                          col2: "skyblue",
+                        },
+                      })
+                    }
+                    value="TB"
+                    required
+                    type="radio"
+                    name="accent"
+                    id="tb"
+                  />
+                </div>
+                {/*....... //..... */}
+                <div className="input">
+                  <label className="acclab" htmlFor="pc">
+                    <p>Pink and Chocolate</p>
+                    <div>
+                      <span className="pc"></span>
+                      <span className="pc"></span>
+                    </div>
+                  </label>
+                  <input
+                    onChange={(e) =>
+                      setStyle({
+                        ...style,
+                        accent: {
+                          col1: "pink",
+                          col2: "chocolate",
+                        },
+                      })
+                    }
+                    value="PC"
+                    required
+                    type="radio"
+                    name="accent"
+                    id="pc"
+                  />
+                </div>
+                {/*....... //..... */}
+                <div className="input">
+                  <label className="acclab" htmlFor="gv">
+                    <p>Gold and Violet</p>
+                    <div>
+                      <span className="gv"></span>
+                      <span className="gv"></span>
+                    </div>
+                  </label>
+                  <input
+                    onChange={(e) =>
+                      setStyle({
+                        ...style,
+                        accent: {
+                          col1: "gold",
+                          col2: "violet",
+                        },
+                      })
+                    }
+                    value="GV"
+                    required
+                    type="radio"
+                    name="accent"
+                    id="gv"
+                  />
+                </div>
+              </div>
+              <p></p>
+            </div>
+            <div className="input-con bg-p">
+              <input className="bg" type="submit" value="Customise" />
+            </div>
+          </form>
+          <Navigation current={"settings"} />
+        </SettingCon>
+      ) : (
+        <div></div>
+      )}
     </>
   );
 }
 const SettingCon = styled.div`
   min-height: 90vh;
+  max-width: 768px;
   display: grid;
   place-items: center;
   margin: 0 auto;
@@ -213,6 +197,7 @@ const SettingCon = styled.div`
     text-align: center;
     padding: 30px;
     width: 97%;
+    max-width: 600px;
     h3,
     h2 {
       text-align: center;
@@ -227,6 +212,9 @@ const SettingCon = styled.div`
       flex-direction: column;
       input[type="submit"] {
         padding: 10px;
+        border: 2px solid white;
+        border-radius: 10px;
+        color: inherit;
       }
     }
     .input {
@@ -271,6 +259,7 @@ const SettingCon = styled.div`
       width: 30px;
       height: 30px;
       border-radius: 50%;
+      margin: 0 3px;
     }
     .tb:first-of-type {
       background: tomato;
@@ -295,35 +284,6 @@ const SettingCon = styled.div`
     .thlab,
     .acclab {
       flex-direction: column;
-    }
-  }
-
-  @media screen and (min-width: 768px) {
-    .input {
-      width: 60%;
-    }
-    form {
-      width: 65%;
-    }
-    .thlab {
-      span {
-        width: 50px;
-        height: 20px;
-        border-radius: 10px;
-      }
-    }
-    .acclab {
-      span {
-        width: 50px;
-        height: 20px;
-        border-radius: 10px;
-      }
-    }
-  }
-  @media screen and (min-width: 1000px) {
-    width: 90vw;
-    form {
-      width: 60%;
     }
   }
 `;

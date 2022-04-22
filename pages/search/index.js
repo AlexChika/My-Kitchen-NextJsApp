@@ -149,7 +149,7 @@ export default function Search() {
         />
         <meta content="article" property="og:type" />
         <meta
-          content={`https://mykitchen.vercel.app/kitchendashboard`}
+          content={`https://mykitchen.vercel.app/search`}
           property="og:url"
         />
         <title>My Kitchen | Search For Meals | Search For Recipees|</title>
@@ -479,7 +479,6 @@ const Main = styled.main`
       }
     }
   }
-  color: white;
 `;
 
 // const style = {

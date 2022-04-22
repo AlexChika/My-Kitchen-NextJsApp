@@ -59,7 +59,6 @@ const Nav = styled.nav`
   width: 100%;
   max-width: 768px;
   z-index: 100;
-  color: white;
   ::before {
     content: "";
     position: absolute;
