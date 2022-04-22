@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { findMeals } from "../../utils/fetchers";
+import { findMeals, randomMeal } from "../../utils/fetchers";
 import Modal from "../../components/Modal";
 import { RotatingLines } from "react-loader-spinner";
 import Header from "../../components/Header";
@@ -71,15 +71,6 @@ export default function Search() {
     setFavourites(favourite);
     localStorage.setItem("favourites", JSON.stringify(favourite));
   };
-  // const [accent, setAccent] = useState({
-  //   color1: "tomato",
-  //   color2: "rgb(17, 227, 241)",
-  // });
-  // useEffect(() => {
-  //   if (localStorage.getItem("accent")) {
-  //     setAccent(JSON.parse(localStorage.getItem("accent")));
-  //   }
-  // }, []);
   const handleSearch = async (e) => {
     e.preventDefault();
     setSearchword(searchValue);
@@ -129,8 +120,33 @@ export default function Search() {
       notFound: false,
     });
   };
-  const handleRandom = () => {
-    console.log("I was hit");
+  const handleRandom = async () => {
+    setMealsarr([]);
+    setStatus({
+      isError: false,
+      isLoading: true,
+      isFetched: false,
+      notFound: false,
+    });
+    const { meal, isError } = await randomMeal();
+    if (isError === true) {
+      setStatus({
+        isError: true,
+        isLoading: false,
+        isFetched: false,
+        notFound: false,
+      });
+      return;
+    }
+    if (meal) {
+      setMealsarr(meal.meals);
+      setStatus({
+        isError: false,
+        isLoading: false,
+        isFetched: true,
+        notFound: false,
+      });
+    }
   };
   return (
     <>
@@ -280,6 +296,7 @@ const Main = styled.main`
   padding: 2.5% 2.5% 0px 2.5%;
   width: 100%;
   min-height: 100vh;
+  color: white;
   .flex_center {
     display: flex;
     justify-content: center;
@@ -480,21 +497,3 @@ const Main = styled.main`
     }
   }
 `;
-
-// const style = {
-//   theme:{
-//     dark:{},
-//     light:{}
-//   },
-//   accent:{
-//     colors:{
-
-//     },
-//   }
-// }
-//  .c-accent1 {
-//     color: ${(props) => (props.accent ? props.accent.color1 : "")};
-//   }
-//   .c-accent2 {
-//     color: ${(props) => (props.accent ? props.accent.color2 : "")};
-//   }

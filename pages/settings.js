@@ -2,9 +2,10 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Navigation from "../components/Navigation";
 import { useState, useEffect } from "react";
-import Router from "next/router";
+import Modal from "../components/Modal";
 export default function Settings() {
   const [load, setLoad] = useState(false);
+  const [modal, setModal] = useState(false);
   useEffect(() => {
     if (!localStorage.getItem("status")) {
       Router.push("/");
@@ -23,7 +24,7 @@ export default function Settings() {
   const HandleSettings = (e) => {
     e.preventDefault();
     e.target.reset();
-    localStorage.setItem("style", JSON.stringify(style));
+    setModal(true);
   };
   return (
     <>
@@ -49,6 +50,14 @@ export default function Settings() {
       </Header>
       {load ? (
         <SettingCon>
+          <Modal modal={modal} setModal={setModal}>
+            <div className="modal">
+              <div>
+                <h2>Sorry!!!</h2>
+                <h2>This Functionality was disabled</h2>
+              </div>
+            </div>
+          </Modal>
           <form className="bg" onSubmit={HandleSettings}>
             <h2 className="mb-20 c-accent1">Customize Your App&apos;s Theme</h2>
             <div className="input-con mb-10 bg-p">
@@ -190,7 +199,15 @@ const SettingCon = styled.div`
   display: grid;
   place-items: center;
   margin: 0 auto;
+  color: white;
   font-family: "Dancing Script", cursive;
+  .modal {
+    height: 25vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
   form {
     margin: 0 auto;
     margin-bottom: 30px;

@@ -56,6 +56,7 @@ const Nav = styled.nav`
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
+  color: white;
   width: 100%;
   max-width: 768px;
   z-index: 100;

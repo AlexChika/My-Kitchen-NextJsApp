@@ -3,13 +3,13 @@ import { GlobalStyles, lightTheme, darkTheme } from "../styles/theme.config";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 function MyApp({ Component, pageProps }) {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("black");
   useEffect(() => {
     if (localStorage.getItem("style")) {
       const storagetheme = JSON.parse(localStorage.getItem("style"));
       setTheme(storagetheme.theme);
     }
-  }, []);
+  });
   const isTrueSet = theme === "light";
   return (
     <>

@@ -36,6 +36,21 @@ export async function findMeal(id) {
     };
   }
 }
+export async function randomMeal() {
+  try {
+    const data = await fetch(`https://themealdb.com/api/json/v1/1/random.php`);
+    const meal = await data.json();
+    return {
+      meal,
+      isError: null,
+    };
+  } catch {
+    return {
+      meal: null,
+      isError: true,
+    };
+  }
+}
 export async function findMealCategory(category) {
   try {
     const data = await fetch(
