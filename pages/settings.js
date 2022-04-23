@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Router from "next/router";
 import Header from "../components/Header";
 import Navigation from "../components/Navigation";
 import { useState, useEffect } from "react";
