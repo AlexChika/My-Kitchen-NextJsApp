@@ -5,6 +5,7 @@ import Navigation from "../../components/Navigation";
 import { useState, useEffect, useRef, useReducer } from "react";
 import { reducer } from "../../utils/reducers";
 import Modal from "../../components/Modal";
+import Header from "../../components/Header";
 export function getdate() {
   const months = [
     "Jan",
@@ -46,9 +47,12 @@ export function getdate() {
   } ${hour}:${cal.getMinutes()}${am}`;
 }
 export default function Dashboard() {
+  const [load, setLoad] = useState(false);
   useEffect(() => {
     if (!localStorage.getItem("status")) {
       router.push("/");
+    } else {
+      setLoad(true);
     }
   }, []);
   const router = useRouter();
@@ -399,654 +403,696 @@ export default function Dashboard() {
     renderTable(table);
   }, []);
   return (
-    <DashboardWrap>
-      <header>
-        <button
-          onClick={() => setOpenShop(!openShop)}
-          className="flex_col_center"
-        >
-          <i className="bi bi-cart-check-fill"></i>
-          <small> Shopping</small>
-          <span className="flex_center">{state.lists.length}</span>
-        </button>
-        <div className="heading_con">
-          <h1>Your own Kitchen</h1>
-          <div className="heading flex_center">
-            <p>Cook Better, Live Better</p>
-            <div className="iconwrap">
-              <i className="fi fi-sr-pot"></i>
-              <i className="fi fi-sr-utensils"></i>
+    <>
+      {load ? (
+        <DashboardWrap>
+          <Header>
+            <meta
+              name="description"
+              content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
+            />
+            <meta
+              content=" My Kitchen | Your Only Step To Becoming A Chef| Search Food
+              Recipes, Watch Video Tutorials, Browse All Kinds of Meals, See
+              Cooking Instruction , Save Favourites And make Meal Timetables/ Calender and many more"
+              property="og:title"
+            />
+            <meta
+              content="mykitchen.vercel.app | Search For Meals., see cooking tutorials on youtube, find kitchen recipees of all kinds off food, save favorites and make cooking timetables and diet planing"
+              property="og:description"
+            />
+            <meta
+              content={`https://mykitchen.vercel.app/dashboard`}
+              property="og:url"
+            />
+            <script
+              async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5656452972473632"
+              crossOrigin="anonymous"
+            ></script>
+            <title>
+              My Kitchen | Your Only Step To Becoming A Chef| Search Food
+              Recipes, Watch Video Tutorials, Browse All Kinds of Meals, See
+              Cooking Instruction , Save Favourites And make Meal Timetables/
+              Calender and many more
+            </title>
+          </Header>
+          <header>
+            <button
+              onClick={() => setOpenShop(!openShop)}
+              className="flex_col_center"
+            >
+              <i className="bi bi-cart-check-fill"></i>
+              <small> Shopping</small>
+              <span className="flex_center">{state.lists.length}</span>
+            </button>
+            <div className="heading_con">
+              <h1>Your own Kitchen</h1>
+              <div className="heading flex_center">
+                <p>Cook Better, Live Better</p>
+                <div className="iconwrap">
+                  <i className="fi fi-sr-pot"></i>
+                  <i className="fi fi-sr-utensils"></i>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </header>
-      <Main className="mt-20">
-        <div className="heading mb-20">
-          <h2>Today&apos;s Meal</h2>
-          <p>{date}</p>
-        </div>
-        <article className="today_meal flex_col_center">
-          <div ref={mealCon} className="meal_con">
-            {
-              <div className="meal">
-                <div className=" meal_header mt-10 flex_center">
-                  <div className="head flex_col_center">
-                    <i className="fi fi-sr-pot"></i>
-                    <p>{"Breakfast"}</p>
-                  </div>
-                  <div className="head flex_col_center">
-                    <i className="bi bi-alarm-fill"></i>
-                    <p> Meal for {mealTime.break}</p>
-                  </div>
-                  <div className="head flex_col_center">
-                    <button data-name="break" onClick={cookedHandler}>
-                      {cooked.break ? (
-                        <i
-                          style={{ color: "#B4FF9F" }}
-                          className="bi bi-toggle-on"
-                        ></i>
-                      ) : (
-                        <i
-                          style={{ color: "skyblue" }}
-                          className="bi bi-toggle-off"
-                        ></i>
-                      )}
-                    </button>
-                    <p>{"Cooked?"}</p>
-                  </div>
-                </div>
-                <div className="main_meal">
-                  <h3 className="mb-10 mt-20">
-                    {todayMeal && todayMeal.break.meal}
-                  </h3>
-                </div>
-              </div>
-            }
-            {
-              <div className="meal">
-                <div className=" meal_header mt-10 flex_center">
-                  <div className="head flex_col_center">
-                    <i className="fi fi-sr-pot"></i>
-                    <p>{"Lunch"}</p>
-                  </div>
-                  <div className="head flex_col_center">
-                    <i className="bi bi-alarm-fill"></i>
-                    <p>Meal for {mealTime.lunch}</p>
-                  </div>
-                  <div className="head flex_col_center">
-                    <button data-name="lunch" onClick={cookedHandler}>
-                      {cooked.lunch ? (
-                        <i
-                          style={{ color: "#B4FF9F" }}
-                          className="bi bi-toggle-on"
-                        ></i>
-                      ) : (
-                        <i
-                          style={{ color: "skyblue" }}
-                          className="bi bi-toggle-off"
-                        ></i>
-                      )}
-                    </button>
-                    <p>{"Cooked?"}</p>
-                  </div>
-                </div>
-                <div className="main_meal">
-                  <h3 className="mb-10 mt-20">
-                    {todayMeal && todayMeal.lunch.meal}
-                  </h3>
-                </div>
-              </div>
-            }
-            {
-              <div className="meal">
-                <div className=" meal_header mt-10 flex_center">
-                  <div className="head flex_col_center">
-                    <i className="fi fi-sr-pot"></i>
-                    <p>{"Dinner"}</p>
-                  </div>
-                  <div className="head flex_col_center">
-                    <i className="bi bi-alarm-fill"></i>
-                    <p>{mealTime.dinner}</p>
-                  </div>
-                  <div className="head flex_col_center">
-                    <button data-name="dinner" onClick={cookedHandler}>
-                      {cooked.dinner ? (
-                        <i
-                          style={{ color: "#B4FF9F" }}
-                          className="bi bi-toggle-on"
-                        ></i>
-                      ) : (
-                        <i
-                          style={{ color: "skyblue" }}
-                          className="bi bi-toggle-off"
-                        ></i>
-                      )}
-                    </button>
-                    <p>{"Cooked?"}</p>
-                  </div>
-                </div>
-                <div className="main_meal">
-                  <h3 className="mb-10 mt-20">
-                    {todayMeal && todayMeal.dinner.meal}
-                  </h3>
-                </div>
-              </div>
-            }
-          </div>
-          <div className="meal_btns flex_center">
-            <button onClick={() => showMeal(0)}>Breakfast</button>
-            <button onClick={() => showMeal(1)}>Lunch</button>
-            <button onClick={() => showMeal(2)}>Dinner</button>
-          </div>
-        </article>
-        <article className="favorites mt-30">
-          <h2>
-            My Favourites{" "}
-            <i style={{ color: "pink" }} className="bi bi-heart-fill"></i>
-          </h2>
-          {favourites.length < 1 ? (
-            <div className="no_favourites flex_center mt-20">
-              <h3>You Have No Favorites</h3>
+          </header>
+          <Main className="mt-20">
+            <div className="heading mb-20">
+              <h2>Today&apos;s Meal</h2>
+              <p>{date}</p>
             </div>
-          ) : (
-            <div className="favorite_con">
-              {favourites.map((favourite) => (
-                <figure key={favourite.id} className="favourite_card_con">
-                  <button
-                    onClick={() => handleRemoveFavorite(favourite.id)}
-                    className="delete"
-                  >
-                    <i
-                      style={{ userSelect: "none" }}
-                      className="bi bi-trash-fill"
-                    ></i>
-                  </button>
-                  <div
-                    onClick={() =>
-                      handleOpenFavorite(favourite.id, favourite.name)
-                    }
-                    style={{ cursor: "pointer" }}
-                    className="favourite_card"
-                  >
-                    <div className="card_info">
-                      <h3>{favourite.name}</h3>
-                      <div>
-                        <ul>
-                          {favourite.ing.slice(0, 5).map((ing, index) => (
-                            <li key={index}>{ing}</li>
-                          ))}
-                        </ul>
+            <article className="today_meal flex_col_center">
+              <div ref={mealCon} className="meal_con">
+                {
+                  <div className="meal">
+                    <div className=" meal_header mt-10 flex_center">
+                      <div className="head flex_col_center">
+                        <i className="fi fi-sr-pot"></i>
+                        <p>{"Breakfast"}</p>
+                      </div>
+                      <div className="head flex_col_center">
+                        <i className="bi bi-alarm-fill"></i>
+                        <p> Meal for {mealTime.break}</p>
+                      </div>
+                      <div className="head flex_col_center">
+                        <button data-name="break" onClick={cookedHandler}>
+                          {cooked.break ? (
+                            <i
+                              style={{ color: "#B4FF9F" }}
+                              className="bi bi-toggle-on"
+                            ></i>
+                          ) : (
+                            <i
+                              style={{ color: "skyblue" }}
+                              className="bi bi-toggle-off"
+                            ></i>
+                          )}
+                        </button>
+                        <p>{"Cooked?"}</p>
                       </div>
                     </div>
-                    <div className="card_img">
-                      <p className="date">{favourite.date}</p>
-                      <Image
-                        layout="fill"
-                        placeholder="blurDataURL"
-                        alt={favourite.name}
-                        src={favourite.img}
-                      />
+                    <div className="main_meal">
+                      <h3 className="mb-10 mt-20">
+                        {todayMeal && todayMeal.break.meal}
+                      </h3>
                     </div>
                   </div>
-                </figure>
-              ))}
-            </div>
-          )}
-        </article>
-        <article className="timetables mt-30 mb-30">
-          <Modal absolute={true} modal={modal} setModal={setModal}>
-            <form className="modal" onSubmit={handleModalInputs}>
-              <h4 className="mb-10">BreakFast Time</h4>
-              <div className="form_control flex_center">
-                <label htmlFor="breakfast">BreakFast</label>
-                <select
-                  onChange={(e) =>
-                    setmodalInput({
-                      ...modalInput,
-                      break: { ...modalInput.break, time: e.target.value },
-                    })
-                  }
-                  required
-                  name="breakfast"
-                  id="breakfast"
-                >
-                  <option value=""></option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12</option>
-                </select>
-                <label htmlFor="b-am">
-                  AM
-                  <input
-                    onChange={(e) =>
-                      setmodalInput({
-                        ...modalInput,
-                        break: {
-                          ...modalInput.break,
-                          meridian: e.target.value,
-                        },
-                      })
-                    }
-                    required
-                    value="am"
-                    type="radio"
-                    name="break"
-                    id="b-am"
-                  />
-                </label>
-                <label htmlFor="b-pm">
-                  PM
-                  <input
-                    onChange={(e) =>
-                      setmodalInput({
-                        ...modalInput,
-                        break: {
-                          ...modalInput.break,
-                          meridian: e.target.value,
-                        },
-                      })
-                    }
-                    required
-                    value="pm"
-                    type="radio"
-                    name="break"
-                    id="b-pm"
-                  />
-                </label>
-              </div>
-              <h4 className="mt-10">Lunch Time</h4>
-              <div className="form_control flex_center">
-                <label htmlFor="lunch">Lunch</label>
-                <select
-                  onChange={(e) =>
-                    setmodalInput({
-                      ...modalInput,
-                      lunch: { ...modalInput.lunch, time: e.target.value },
-                    })
-                  }
-                  required
-                  name="lunch"
-                  id="lunch"
-                >
-                  <option value=""></option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12</option>
-                </select>
-                <label htmlFor="l-am">
-                  AM
-                  <input
-                    onChange={(e) =>
-                      setmodalInput({
-                        ...modalInput,
-                        lunch: {
-                          ...modalInput.lunch,
-                          meridian: e.target.value,
-                        },
-                      })
-                    }
-                    required
-                    value="am"
-                    type="radio"
-                    name="lunch"
-                    id="l-am"
-                  />
-                </label>
-                <label htmlFor="l-pm">
-                  PM
-                  <input
-                    onChange={(e) =>
-                      setmodalInput({
-                        ...modalInput,
-                        lunch: {
-                          ...modalInput.lunch,
-                          meridian: e.target.value,
-                        },
-                      })
-                    }
-                    required
-                    value="pm"
-                    type="radio"
-                    name="lunch"
-                    id="l-pm"
-                  />
-                </label>
-              </div>
-              <h4 className="mt-10">Dinner Time</h4>
-              <div className="form_control flex_center">
-                <label htmlFor="dinner">Dinner</label>
-                <select
-                  onChange={(e) =>
-                    setmodalInput({
-                      ...modalInput,
-                      dinner: { ...modalInput.dinner, time: e.target.value },
-                    })
-                  }
-                  required
-                  name="dinner"
-                  id="dinner"
-                >
-                  <option value=""></option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12</option>
-                </select>
-                <label htmlFor="d-am">
-                  AM
-                  <input
-                    onChange={(e) =>
-                      setmodalInput({
-                        ...modalInput,
-                        dinner: {
-                          ...modalInput.dinner,
-                          meridian: e.target.value,
-                        },
-                      })
-                    }
-                    required
-                    value="am"
-                    type="radio"
-                    name="dinner"
-                    id="d-am"
-                  />
-                </label>
-                <label htmlFor="d-pm">
-                  PM
-                  <input
-                    onChange={(e) =>
-                      setmodalInput({
-                        ...modalInput,
-                        dinner: {
-                          ...modalInput.dinner,
-                          meridian: e.target.value,
-                        },
-                      })
-                    }
-                    required
-                    value="pm"
-                    type="radio"
-                    name="dinner"
-                    id="d-pm"
-                  />
-                </label>
-              </div>
-              <button className="form_btn fullwh mt-20">Set Time</button>
-            </form>
-          </Modal>
-          <h2 className="mb-10">My Weekly Meals</h2>
-          <div className="tableControls">
-            <button className="fullwh" onClick={() => setModal(true)}>
-              <span>Table settings </span>
-              <i className="bi bi-gear-fill"></i>
-            </button>
-          </div>
-          <div className="table_con">
-            <form onSubmit={handleTableInputs}>
-              <Figure>
-                <div className="one">
-                  <p>BreakFast</p>
-                  <span>Monday</span>
-                  <div
-                    className="inputs"
-                    data-name="mBreak"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="two">
-                  <p>Lunch</p>
-                  <div
-                    className="inputs"
-                    data-name="mLunch"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="three">
-                  <p>Dinner</p>
-                  <div
-                    className="inputs"
-                    data-name="mDinner"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="four">
-                  <span>Tuesday</span>
-                  <div
-                    className="inputs"
-                    data-name="tBreak"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="five">
-                  <div
-                    className="inputs"
-                    data-name="tLunch"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="six">
-                  <div
-                    className="inputs"
-                    data-name="tDinner"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="seven">
-                  <span>Wednesday</span>
-                  <div
-                    className="inputs"
-                    data-name="wBreak"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="eight">
-                  <div
-                    className="inputs"
-                    data-name="wLunch"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="nine">
-                  <div
-                    className="inputs"
-                    data-name="wDinner"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="ten">
-                  <span>Thursday</span>
-                  <div
-                    className="inputs"
-                    data-name="thBreak"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="eleven">
-                  <div
-                    className="inputs"
-                    data-name="thLunch"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="twelve">
-                  <div
-                    className="inputs"
-                    data-name="thDinner"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="thirteen">
-                  <span>Friday</span>
-                  <div
-                    className="inputs"
-                    data-name="fBreak"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="fourteen">
-                  <div
-                    className="inputs"
-                    data-name="fLunch"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="fifteen">
-                  <div
-                    className="inputs"
-                    data-name="fDinner"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="sixteen">
-                  <span>Saturday</span>
-                  <div
-                    className="inputs"
-                    data-name="sBreak"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="seventeen">
-                  <div
-                    className="inputs"
-                    data-name="sLunch"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="eighteen">
-                  <div
-                    className="inputs"
-                    data-name="sDinner"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="nineteen">
-                  <span>Sunday</span>
-                  <div
-                    className="inputs"
-                    data-name="suBreak"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="twenty">
-                  <div
-                    className="inputs"
-                    data-name="suLunch"
-                    contentEditable="true"
-                  ></div>
-                </div>
-                <div className="twenty_one">
-                  <div
-                    className="inputs"
-                    data-name="suDinner"
-                    contentEditable="true"
-                  ></div>
-                </div>
-              </Figure>
-              <button className="table_btn fullwh" type="submit">
-                Save Changes
-              </button>
-            </form>
-          </div>
-        </article>
-        <h2 className="footer">Your own Kitchen</h2>
-      </Main>
-      <section className={`shopping_cart bg ${openShop ? "open" : ""} `}>
-        <div className="heading">
-          <h1>{state.lists.length > 0 ? "Shopping Items" : "No Items Here"}</h1>
-          <button onClick={() => setOpenShop(!openShop)}>
-            <i className="bi bi-x-circle"></i>
-          </button>
-        </div>
-        <div className="shopping_body">
-          <p className="alert" ref={alerter}></p>
-          <form
-            onSubmit={handleSubmitShopingItem}
-            className="shopping_form mt-20"
-          >
-            <input
-              value={shopingItem}
-              onInput={(e) => setShopingItem(e.target.value)}
-              type="text"
-              placeholder="Add an item"
-            />
-            <button type="submit" className="enter">
-              <span className="blinker">{edit ? "Edit" : "Add +"}</span>
-            </button>
-          </form>
-          <div className="todo-con">
-            <div className="list">
-              {state.lists
-                .slice()
-                .reverse()
-                .map((item) => (
-                  <article key={item.id}>
-                    <p>
-                      {item.item}{" "}
-                      <span>
-                        {item.done ? (
-                          <i className="bi bi-check-circle-fill"></i>
-                        ) : (
-                          ""
-                        )}
-                      </span>
-                    </p>
-                    <div className="btn-con">
-                      <button
-                        onClick={() => handleDoneShoppingList(item.id)}
-                        className="done"
-                      >
-                        <i className="bi bi-check-all"></i>
-                      </button>
-                      <button
-                        onClick={() => handleEditShoppingList(item)}
-                        className="edit"
-                      >
-                        <i className="bi bi-pencil-square"></i>
-                      </button>
-                      <button
-                        onClick={() => handleDeleteShoppingList(item.id)}
-                        className="del"
-                      >
-                        <i className="bi bi-trash-fill"></i>
-                      </button>
+                }
+                {
+                  <div className="meal">
+                    <div className=" meal_header mt-10 flex_center">
+                      <div className="head flex_col_center">
+                        <i className="fi fi-sr-pot"></i>
+                        <p>{"Lunch"}</p>
+                      </div>
+                      <div className="head flex_col_center">
+                        <i className="bi bi-alarm-fill"></i>
+                        <p>Meal for {mealTime.lunch}</p>
+                      </div>
+                      <div className="head flex_col_center">
+                        <button data-name="lunch" onClick={cookedHandler}>
+                          {cooked.lunch ? (
+                            <i
+                              style={{ color: "#B4FF9F" }}
+                              className="bi bi-toggle-on"
+                            ></i>
+                          ) : (
+                            <i
+                              style={{ color: "skyblue" }}
+                              className="bi bi-toggle-off"
+                            ></i>
+                          )}
+                        </button>
+                        <p>{"Cooked?"}</p>
+                      </div>
                     </div>
-                  </article>
-                ))}
+                    <div className="main_meal">
+                      <h3 className="mb-10 mt-20">
+                        {todayMeal && todayMeal.lunch.meal}
+                      </h3>
+                    </div>
+                  </div>
+                }
+                {
+                  <div className="meal">
+                    <div className=" meal_header mt-10 flex_center">
+                      <div className="head flex_col_center">
+                        <i className="fi fi-sr-pot"></i>
+                        <p>{"Dinner"}</p>
+                      </div>
+                      <div className="head flex_col_center">
+                        <i className="bi bi-alarm-fill"></i>
+                        <p>{mealTime.dinner}</p>
+                      </div>
+                      <div className="head flex_col_center">
+                        <button data-name="dinner" onClick={cookedHandler}>
+                          {cooked.dinner ? (
+                            <i
+                              style={{ color: "#B4FF9F" }}
+                              className="bi bi-toggle-on"
+                            ></i>
+                          ) : (
+                            <i
+                              style={{ color: "skyblue" }}
+                              className="bi bi-toggle-off"
+                            ></i>
+                          )}
+                        </button>
+                        <p>{"Cooked?"}</p>
+                      </div>
+                    </div>
+                    <div className="main_meal">
+                      <h3 className="mb-10 mt-20">
+                        {todayMeal && todayMeal.dinner.meal}
+                      </h3>
+                    </div>
+                  </div>
+                }
+              </div>
+              <div className="meal_btns flex_center">
+                <button onClick={() => showMeal(0)}>Breakfast</button>
+                <button onClick={() => showMeal(1)}>Lunch</button>
+                <button onClick={() => showMeal(2)}>Dinner</button>
+              </div>
+            </article>
+            <article className="favorites mt-30">
+              <h2>
+                My Favourites{" "}
+                <i style={{ color: "pink" }} className="bi bi-heart-fill"></i>
+              </h2>
+              {favourites.length < 1 ? (
+                <div className="no_favourites flex_center mt-20">
+                  <h3>You Have No Favorites</h3>
+                </div>
+              ) : (
+                <div className="favorite_con">
+                  {favourites.map((favourite) => (
+                    <figure key={favourite.id} className="favourite_card_con">
+                      <button
+                        onClick={() => handleRemoveFavorite(favourite.id)}
+                        className="delete"
+                      >
+                        <i
+                          style={{ userSelect: "none" }}
+                          className="bi bi-trash-fill"
+                        ></i>
+                      </button>
+                      <div
+                        onClick={() =>
+                          handleOpenFavorite(favourite.id, favourite.name)
+                        }
+                        style={{ cursor: "pointer" }}
+                        className="favourite_card"
+                      >
+                        <div className="card_info">
+                          <h3>{favourite.name}</h3>
+                          <div>
+                            <ul>
+                              {favourite.ing.slice(0, 5).map((ing, index) => (
+                                <li key={index}>{ing}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="card_img">
+                          <p className="date">{favourite.date}</p>
+                          <Image
+                            layout="fill"
+                            placeholder="blurDataURL"
+                            alt={favourite.name}
+                            src={favourite.img}
+                          />
+                        </div>
+                      </div>
+                    </figure>
+                  ))}
+                </div>
+              )}
+            </article>
+            <article className="timetables mt-30 mb-30">
+              <Modal absolute={true} modal={modal} setModal={setModal}>
+                <form className="modal" onSubmit={handleModalInputs}>
+                  <h4 className="mb-10">BreakFast Time</h4>
+                  <div className="form_control flex_center">
+                    <label htmlFor="breakfast">BreakFast</label>
+                    <select
+                      onChange={(e) =>
+                        setmodalInput({
+                          ...modalInput,
+                          break: { ...modalInput.break, time: e.target.value },
+                        })
+                      }
+                      required
+                      name="breakfast"
+                      id="breakfast"
+                    >
+                      <option value=""></option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                    </select>
+                    <label htmlFor="b-am">
+                      AM
+                      <input
+                        onChange={(e) =>
+                          setmodalInput({
+                            ...modalInput,
+                            break: {
+                              ...modalInput.break,
+                              meridian: e.target.value,
+                            },
+                          })
+                        }
+                        required
+                        value="am"
+                        type="radio"
+                        name="break"
+                        id="b-am"
+                      />
+                    </label>
+                    <label htmlFor="b-pm">
+                      PM
+                      <input
+                        onChange={(e) =>
+                          setmodalInput({
+                            ...modalInput,
+                            break: {
+                              ...modalInput.break,
+                              meridian: e.target.value,
+                            },
+                          })
+                        }
+                        required
+                        value="pm"
+                        type="radio"
+                        name="break"
+                        id="b-pm"
+                      />
+                    </label>
+                  </div>
+                  <h4 className="mt-10">Lunch Time</h4>
+                  <div className="form_control flex_center">
+                    <label htmlFor="lunch">Lunch</label>
+                    <select
+                      onChange={(e) =>
+                        setmodalInput({
+                          ...modalInput,
+                          lunch: { ...modalInput.lunch, time: e.target.value },
+                        })
+                      }
+                      required
+                      name="lunch"
+                      id="lunch"
+                    >
+                      <option value=""></option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                    </select>
+                    <label htmlFor="l-am">
+                      AM
+                      <input
+                        onChange={(e) =>
+                          setmodalInput({
+                            ...modalInput,
+                            lunch: {
+                              ...modalInput.lunch,
+                              meridian: e.target.value,
+                            },
+                          })
+                        }
+                        required
+                        value="am"
+                        type="radio"
+                        name="lunch"
+                        id="l-am"
+                      />
+                    </label>
+                    <label htmlFor="l-pm">
+                      PM
+                      <input
+                        onChange={(e) =>
+                          setmodalInput({
+                            ...modalInput,
+                            lunch: {
+                              ...modalInput.lunch,
+                              meridian: e.target.value,
+                            },
+                          })
+                        }
+                        required
+                        value="pm"
+                        type="radio"
+                        name="lunch"
+                        id="l-pm"
+                      />
+                    </label>
+                  </div>
+                  <h4 className="mt-10">Dinner Time</h4>
+                  <div className="form_control flex_center">
+                    <label htmlFor="dinner">Dinner</label>
+                    <select
+                      onChange={(e) =>
+                        setmodalInput({
+                          ...modalInput,
+                          dinner: {
+                            ...modalInput.dinner,
+                            time: e.target.value,
+                          },
+                        })
+                      }
+                      required
+                      name="dinner"
+                      id="dinner"
+                    >
+                      <option value=""></option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                    </select>
+                    <label htmlFor="d-am">
+                      AM
+                      <input
+                        onChange={(e) =>
+                          setmodalInput({
+                            ...modalInput,
+                            dinner: {
+                              ...modalInput.dinner,
+                              meridian: e.target.value,
+                            },
+                          })
+                        }
+                        required
+                        value="am"
+                        type="radio"
+                        name="dinner"
+                        id="d-am"
+                      />
+                    </label>
+                    <label htmlFor="d-pm">
+                      PM
+                      <input
+                        onChange={(e) =>
+                          setmodalInput({
+                            ...modalInput,
+                            dinner: {
+                              ...modalInput.dinner,
+                              meridian: e.target.value,
+                            },
+                          })
+                        }
+                        required
+                        value="pm"
+                        type="radio"
+                        name="dinner"
+                        id="d-pm"
+                      />
+                    </label>
+                  </div>
+                  <button className="form_btn fullwh mt-20">Set Time</button>
+                </form>
+              </Modal>
+              <h2 className="mb-10">My Weekly Meals</h2>
+              <div className="tableControls">
+                <button className="fullwh" onClick={() => setModal(true)}>
+                  <span>Table settings </span>
+                  <i className="bi bi-gear-fill"></i>
+                </button>
+              </div>
+              <div className="table_con">
+                <form onSubmit={handleTableInputs}>
+                  <Figure>
+                    <div className="one">
+                      <p>BreakFast</p>
+                      <span>Monday</span>
+                      <div
+                        className="inputs"
+                        data-name="mBreak"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="two">
+                      <p>Lunch</p>
+                      <div
+                        className="inputs"
+                        data-name="mLunch"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="three">
+                      <p>Dinner</p>
+                      <div
+                        className="inputs"
+                        data-name="mDinner"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="four">
+                      <span>Tuesday</span>
+                      <div
+                        className="inputs"
+                        data-name="tBreak"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="five">
+                      <div
+                        className="inputs"
+                        data-name="tLunch"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="six">
+                      <div
+                        className="inputs"
+                        data-name="tDinner"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="seven">
+                      <span>Wednesday</span>
+                      <div
+                        className="inputs"
+                        data-name="wBreak"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="eight">
+                      <div
+                        className="inputs"
+                        data-name="wLunch"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="nine">
+                      <div
+                        className="inputs"
+                        data-name="wDinner"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="ten">
+                      <span>Thursday</span>
+                      <div
+                        className="inputs"
+                        data-name="thBreak"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="eleven">
+                      <div
+                        className="inputs"
+                        data-name="thLunch"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="twelve">
+                      <div
+                        className="inputs"
+                        data-name="thDinner"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="thirteen">
+                      <span>Friday</span>
+                      <div
+                        className="inputs"
+                        data-name="fBreak"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="fourteen">
+                      <div
+                        className="inputs"
+                        data-name="fLunch"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="fifteen">
+                      <div
+                        className="inputs"
+                        data-name="fDinner"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="sixteen">
+                      <span>Saturday</span>
+                      <div
+                        className="inputs"
+                        data-name="sBreak"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="seventeen">
+                      <div
+                        className="inputs"
+                        data-name="sLunch"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="eighteen">
+                      <div
+                        className="inputs"
+                        data-name="sDinner"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="nineteen">
+                      <span>Sunday</span>
+                      <div
+                        className="inputs"
+                        data-name="suBreak"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="twenty">
+                      <div
+                        className="inputs"
+                        data-name="suLunch"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                    <div className="twenty_one">
+                      <div
+                        className="inputs"
+                        data-name="suDinner"
+                        contentEditable="true"
+                      ></div>
+                    </div>
+                  </Figure>
+                  <button className="table_btn fullwh" type="submit">
+                    Save Changes
+                  </button>
+                </form>
+              </div>
+            </article>
+            <h2 className="footer">Your own Kitchen</h2>
+          </Main>
+          <section className={`shopping_cart bg ${openShop ? "open" : ""} `}>
+            <div className="heading">
+              <h1>
+                {state.lists.length > 0 ? "Shopping Items" : "No Items Here"}
+              </h1>
+              <button onClick={() => setOpenShop(!openShop)}>
+                <i className="bi bi-x-circle"></i>
+              </button>
             </div>
-            <button onClick={handleClearShoppingList} className="clear">
-              Clear All
-            </button>
-          </div>
-        </div>
-      </section>
-      <Navigation current={"dashboard"} />
-    </DashboardWrap>
+            <div className="shopping_body">
+              <p className="alert" ref={alerter}></p>
+              <form
+                onSubmit={handleSubmitShopingItem}
+                className="shopping_form mt-20"
+              >
+                <input
+                  value={shopingItem}
+                  onInput={(e) => setShopingItem(e.target.value)}
+                  type="text"
+                  placeholder="Add an item"
+                />
+                <button type="submit" className="enter">
+                  <span className="blinker">{edit ? "Edit" : "Add +"}</span>
+                </button>
+              </form>
+              <div className="todo-con">
+                <div className="list">
+                  {state.lists
+                    .slice()
+                    .reverse()
+                    .map((item) => (
+                      <article key={item.id}>
+                        <p>
+                          {item.item}{" "}
+                          <span>
+                            {item.done ? (
+                              <i className="bi bi-check-circle-fill"></i>
+                            ) : (
+                              ""
+                            )}
+                          </span>
+                        </p>
+                        <div className="btn-con">
+                          <button
+                            onClick={() => handleDoneShoppingList(item.id)}
+                            className="done"
+                          >
+                            <i className="bi bi-check-all"></i>
+                          </button>
+                          <button
+                            onClick={() => handleEditShoppingList(item)}
+                            className="edit"
+                          >
+                            <i className="bi bi-pencil-square"></i>
+                          </button>
+                          <button
+                            onClick={() => handleDeleteShoppingList(item.id)}
+                            className="del"
+                          >
+                            <i className="bi bi-trash-fill"></i>
+                          </button>
+                        </div>
+                      </article>
+                    ))}
+                </div>
+                <button onClick={handleClearShoppingList} className="clear">
+                  Clear All
+                </button>
+              </div>
+            </div>
+          </section>
+          <Navigation current={"dashboard"} />
+        </DashboardWrap>
+      ) : (
+        <div></div>
+      )}
+    </>
   );
 }
 

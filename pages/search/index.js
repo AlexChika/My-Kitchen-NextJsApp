@@ -121,6 +121,7 @@ export default function Search() {
     });
   };
   const handleRandom = async () => {
+    setSearchword("Random");
     setMealsarr([]);
     setStatus({
       isError: false,
