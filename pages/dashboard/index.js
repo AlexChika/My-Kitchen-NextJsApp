@@ -283,6 +283,7 @@ export default function Dashboard() {
     }
   };
   useEffect(() => {
+    if (load === false) return;
     const meal = mealCon.current.querySelectorAll(".meal");
     meal.forEach((meal, index) => {
       meal.style.left = `${index * 100}%`;
@@ -300,7 +301,7 @@ export default function Dashboard() {
       dinner: "5pm",
     };
     setMealTime(mealTime);
-  }, []);
+  }, [load]);
   useEffect(() => {
     mealofTheDay();
     const cooked = JSON.parse(localStorage.getItem("cooked"));
@@ -320,6 +321,7 @@ export default function Dashboard() {
     }, 6000);
   }, []);
   const showMeal = (no) => {
+    if (load === false) return;
     const meal = mealCon.current.querySelectorAll(".meal");
     meal.forEach((meal) => {
       meal.style.transform = `translateX(-${no * 100}%)`;
@@ -401,7 +403,7 @@ export default function Dashboard() {
     };
     localStorage.setItem("table", JSON.stringify(table));
     renderTable(table);
-  }, []);
+  }, [load]);
   return (
     <>
       {load ? (
