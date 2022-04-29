@@ -122,13 +122,18 @@ export default function Dashboard() {
   // ..................... States For favourites......................
   const [favourites, setFavourites] = useState([]);
   // ........functions for shopping list category............
+  const [timeOutId, setTimeOutId] = useState(null);
   function alerts(text, color) {
+    if (timeOutId) {
+      clearTimeout(timeOutId);
+    }
     alerter.current.classList.add(color);
     alerter.current.textContent = text;
-    setTimeout(() => {
-      alerter.current.classList.remove(color);
+    const timeOut = setTimeout(() => {
+      alerter.current.className = "alert";
       alerter.current.textContent = "";
     }, 2000);
+    setTimeOutId(timeOut);
   }
   // edtting the shoping list
   const handleEditShoppingList = (item) => {
@@ -387,13 +392,10 @@ export default function Dashboard() {
   };
   const renderTable = (table) => {
     const inputs = [...document.querySelectorAll(".inputs")];
-    inputs.forEach((input, index) => {
+    inputs.forEach((input) => {
       let dataname = input.dataset.name;
       let { [dataname]: name } = table;
       input.textContent = name;
-      if (index === 0) {
-        input.focus();
-      }
     });
   };
   useEffect(() => {
@@ -1327,6 +1329,7 @@ const DashboardWrap = styled.main`
     animation: bounce 1s linear infinite;
   }
   .todo-con {
+    padding-bottom: 20px;
     margin-top: 1em;
   }
   .list {
