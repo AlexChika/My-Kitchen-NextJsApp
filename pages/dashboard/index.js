@@ -1329,7 +1329,7 @@ const DashboardWrap = styled.main`
     animation: bounce 1s linear infinite;
   }
   .todo-con {
-    padding-bottom: 20px;
+    margin-bottom: 20px;
     margin-top: 1em;
   }
   .list {
@@ -1389,6 +1389,9 @@ const DashboardWrap = styled.main`
   .danger {
     color: rgb(255, 38, 0);
     background-color: rgb(231, 178, 168);
+  }
+  .clear {
+    padding-bottom: 20px;
   }
 
   @keyframes bounce {
