@@ -1329,7 +1329,7 @@ const DashboardWrap = styled.main`
     animation: bounce 1s linear infinite;
   }
   .todo-con {
-    margin-bottom: 20px;
+    margin-bottom: 45px;
     margin-top: 1em;
   }
   .list {
